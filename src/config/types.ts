@@ -1,0 +1,9 @@
+export type Environment = "development" | "production" | "test";
+
+export interface Config {
+  app: {
+    name: string;
+    port: number;
+    env: Environment;
+  };
+}

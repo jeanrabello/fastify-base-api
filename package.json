@@ -7,7 +7,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "tsx watch ./server.ts",
+    "dev": "cross-env NODE_ENV=development tsx watch ./server.ts",
+    "test": "cross-env NODE_ENV=test tsx watch ./server.ts",
+    "prod": "cross-env NODE_ENV=production tsx watch ./server.ts",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write ."
   },
@@ -18,12 +20,14 @@
     "@fastify/cors": "^10.0.1",
     "@fastify/swagger": "^9.4.0",
     "@fastify/swagger-ui": "^5.2.0",
+    "dotenv": "^16.4.7",
     "fastify": "^5.2.0",
     "fastify-type-provider-zod": "^4.0.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "cross-env": "^7.0.3",
     "prettier": "^3.4.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
