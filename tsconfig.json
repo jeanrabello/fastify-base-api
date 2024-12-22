@@ -13,7 +13,9 @@
     "skipLibCheck": true,
     "moduleResolution": "node16",
     "paths": {
-      "@config/*": ["./src/config/*"]
+      "@config/*": ["./src/config/*"],
+      "@lang/*": ["./src/lang/*"],
+      "@middlewares/*": ["./src/shared/middlewares/*"]
     }
   }
 }
