@@ -15,7 +15,8 @@
     "paths": {
       "@config/*": ["./src/config/*"],
       "@lang/*": ["./src/lang/*"],
-      "@middlewares/*": ["./src/shared/middlewares/*"]
+      "@middlewares/*": ["./src/shared/middlewares/*"],
+      "@plugins/*": ["./src/plugins/*"]
     }
   }
 }

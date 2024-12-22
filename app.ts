@@ -1,10 +1,17 @@
 import config from "@config/api";
+import { fastifyCors } from "@fastify/cors";
 import translationMiddleware from "@middlewares/translation";
+import { swaggerPlugin } from "@plugins/index";
 import { fastify, FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 const app: FastifyInstance = fastify().withTypeProvider<ZodTypeProvider>();
 
+app.register(fastifyCors, {
+  origin: "*",
+});
+
+swaggerPlugin(app);
 translationMiddleware(app);
 
 app.get("/", async (request, reply) => {

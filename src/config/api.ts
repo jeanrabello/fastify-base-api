@@ -14,6 +14,9 @@ const getConfig = (): Config => {
       port: Number(process.env.APP_PORT) || 3000,
       env: environment,
     },
+    swagger: {
+      enabled: environment === "development",
+    },
   };
 
   return config;
