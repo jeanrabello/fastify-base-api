@@ -1,11 +1,19 @@
 import config from "@config/api";
 import { fastifyCors } from "@fastify/cors";
 import translationMiddleware from "@middlewares/translation";
+import { routes } from "@modules/routes";
 import { swaggerPlugin } from "@plugins/index";
-import { fastify, FastifyInstance } from "fastify";
-import { ZodTypeProvider } from "fastify-type-provider-zod";
+import { fastify } from "fastify";
+import {
+  serializerCompiler,
+  validatorCompiler,
+  ZodTypeProvider,
+} from "fastify-type-provider-zod";
 
-const app: FastifyInstance = fastify().withTypeProvider<ZodTypeProvider>();
+const app = fastify().withTypeProvider<ZodTypeProvider>();
+
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
 
 app.register(fastifyCors, {
   origin: "*",
@@ -13,12 +21,7 @@ app.register(fastifyCors, {
 
 swaggerPlugin(app);
 translationMiddleware(app);
-
-app.get("/", async (request, reply) => {
-  return reply.send({
-    message: request.languagePack.commom.helloWorld,
-  });
-});
+app.register(routes);
 
 app.listen({ port: config.app.port }, (err, address) => {
   if (err) {
