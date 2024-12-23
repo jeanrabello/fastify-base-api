@@ -18,7 +18,8 @@
       "@middlewares/*": ["./src/shared/middlewares/*"],
       "@plugins/*": ["./src/plugins/*"],
       "@modules/*": ["./src/modules/*"],
-      "@utils/*": ["./src/shared/utils/*"]
+      "@utils/*": ["./src/shared/utils/*"],
+      "@src/*": ["./src/*"]
     }
   }
 }

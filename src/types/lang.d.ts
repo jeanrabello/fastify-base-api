@@ -1,5 +1,12 @@
 export type Translation = {
   commom: {
-    helloWorld: string;
+    error: {
+      requiredFields: string;
+    };
+  };
+  user: {
+    createUser: {
+      succes: string;
+    };
   };
 };

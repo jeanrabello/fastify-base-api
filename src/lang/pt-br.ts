@@ -1,8 +1,15 @@
-import { Translation } from "./types";
+import { Translation } from "../types/lang";
 
 const ptBr: Translation = {
   commom: {
-    helloWorld: "Olá Mundo",
+    error: {
+      requiredFields: "Campos obrigatórios não preenchidos",
+    },
+  },
+  user: {
+    createUser: {
+      succes: "Usuário criado com sucesso!",
+    },
   },
 };
 

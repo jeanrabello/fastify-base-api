@@ -9,4 +9,8 @@ export interface Config {
   swagger: {
     enabled: boolean;
   };
+  db: {
+    uri: string;
+    dbName: string;
+  };
 }

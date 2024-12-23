@@ -9,6 +9,7 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { connectToDatabase } from "./src/loaders/database";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -22,6 +23,7 @@ app.register(fastifyCors, {
 swaggerPlugin(app);
 translationMiddleware(app);
 app.register(routes);
+connectToDatabase();
 
 app.listen({ port: config.app.port }, (err, address) => {
   if (err) {

@@ -1,8 +1,15 @@
-import { Translation } from "./types";
+import { Translation } from "../types/lang";
 
 const en: Translation = {
   commom: {
-    helloWorld: "Hello World",
+    error: {
+      requiredFields: "Required fields not filled",
+    },
+  },
+  user: {
+    createUser: {
+      succes: "User created successfully!",
+    },
   },
 };
 
