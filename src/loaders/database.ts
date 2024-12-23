@@ -7,15 +7,10 @@ const connectToDatabase = async () => {
   const { dbName, uri } = config.db;
 
   const client = new MongoClient(uri);
+  await client.connect();
 
-  try {
-    await client.connect();
-    db = client.db(dbName);
-    console.log(`Connected to MongoDB: ${dbName}`);
-  } catch (error) {
-    console.error("Error connecting with MongoDB:", error);
-    process.exit(1);
-  }
+  db = client.db(dbName);
+  console.log(`Connected to MongoDB: ${dbName}`);
 };
 
 const getDb = (): Db => {
