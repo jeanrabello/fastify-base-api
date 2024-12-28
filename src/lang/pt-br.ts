@@ -8,7 +8,7 @@ const ptBr: Translation = {
   },
   user: {
     createUser: {
-      succes: "Usuário criado com sucesso!",
+      success: "Usuário criado com sucesso!",
     },
   },
 };

@@ -8,7 +8,7 @@ const en: Translation = {
   },
   user: {
     createUser: {
-      succes: "User created successfully!",
+      success: "User created successfully!",
     },
   },
 };

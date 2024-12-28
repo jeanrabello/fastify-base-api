@@ -16,7 +16,7 @@ export class CreateUserController implements Controller<CreateUserModel> {
 
     return {
       statusCode: 201,
-      message: request.languagePack.user.createUser.succes,
+      message: request.languagePack.user.createUser.success,
     };
   }
 }

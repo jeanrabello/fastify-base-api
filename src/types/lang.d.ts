@@ -6,7 +6,7 @@ export type Translation = {
   };
   user: {
     createUser: {
-      succes: string;
+      success: string;
     };
   };
 };
