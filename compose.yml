@@ -5,9 +5,8 @@ services:
     image: mongo
     container_name: mongodb
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-root}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-root}
+    env_file:
+      - ./.env
     ports:
       - "27017:27017"
     volumes:

@@ -13,4 +13,4 @@ const ptBr: Translation = {
   },
 };
 
-export default ptBr;
+exports["pt-br"];

@@ -13,4 +13,4 @@ const en: Translation = {
   },
 };
 
-export default en;
+exports["en-US"];

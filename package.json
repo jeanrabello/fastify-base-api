@@ -7,9 +7,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development tsx watch ./src/server.ts",
-    "test": "cross-env NODE_ENV=test tsx watch ./src/server.ts",
-    "prod": "cross-env NODE_ENV=production tsx watch ./src/server.ts",
+    "start": "tsx watch ./src/server.ts",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write ."
   },

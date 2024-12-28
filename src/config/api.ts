@@ -1,11 +1,8 @@
 import dotenv from "dotenv";
 import { Config, Environment } from "./types";
 
+dotenv.config();
 const environment = (process.env.NODE_ENV || "development") as Environment;
-
-dotenv.config({
-  path: `.env.${environment}`,
-});
 
 const getConfig = (): Config => {
   const config: Config = {
@@ -20,6 +17,8 @@ const getConfig = (): Config => {
     db: {
       uri: process.env.MONGO_URI || "",
       dbName: process.env.MONGO_DB_NAME || "fastifyAPI",
+      user: process.env.MONGO_INITDB_ROOT_USERNAME || "root",
+      password: process.env.MONGO_INITDB_ROOT_PASSWORD || "root",
     },
   };
 

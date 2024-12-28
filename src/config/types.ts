@@ -12,5 +12,7 @@ export interface Config {
   db: {
     uri: string;
     dbName: string;
+    user: string;
+    password: string;
   };
 }
