@@ -9,7 +9,12 @@
   "scripts": {
     "start": "tsx watch ./src/server.ts",
     "lint:check": "prettier --check .",
-    "lint:fix": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "services:up": "docker compose up -d",
+    "services:down": "docker compose down",
+    "services:stop": "docker compose stop"
   },
   "keywords": [],
   "author": "Jean Rabello",

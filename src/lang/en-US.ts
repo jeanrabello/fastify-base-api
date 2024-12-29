@@ -1,6 +1,6 @@
 import { Translation } from "../types/lang";
 
-const en: Translation = {
+const enUs: Translation = {
   commom: {
     error: {
       requiredFields: "Required fields not filled",
@@ -9,8 +9,9 @@ const en: Translation = {
   user: {
     createUser: {
       success: "User created successfully!",
+      error: "Error creating user",
     },
   },
 };
 
-exports["en-US"];
+export default enUs;

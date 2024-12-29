@@ -7,6 +7,7 @@ export type Translation = {
   user: {
     createUser: {
       success: string;
+      error: string;
     };
   };
 };

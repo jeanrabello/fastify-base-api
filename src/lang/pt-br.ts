@@ -9,8 +9,9 @@ const ptBr: Translation = {
   user: {
     createUser: {
       success: "Usuário criado com sucesso!",
+      error: "Erro ao criar usuário",
     },
   },
 };
 
-exports["pt-br"];
+export default ptBr;
