@@ -9,7 +9,7 @@ export class CreateUserRepository extends AbstractRepository<
   async execute(user: CreateUserModel): Promise<User> {
     const collection = this.db.collection("users");
     const newDocument = {
-      name: user.username,
+      username: user.username,
       email: user.email,
       password: user.password,
       createdAt: new Date(),

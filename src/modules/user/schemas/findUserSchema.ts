@@ -8,24 +8,18 @@ const findUserSchema = {
       "accept-language": z.string().optional().default("en-US"),
     }),
     params: z.object({
-      id: z.string().uuid(),
+      id: z.string(),
     }),
     response: {
-      302: z
+      200: z
         .object({
-          statusCode: z.number().default(302),
+          statusCode: z.number().default(200),
           data: z.object({
             id: z.string(),
             username: z.string(),
             email: z.string().email(),
-            createdAt: z
-              .string()
-              .datetime()
-              .describe("ISO date string for when the user was created"),
-            updatedAt: z
-              .string()
-              .datetime()
-              .describe("ISO date string for when the user was last updated"),
+            createdAt: z.date(),
+            updatedAt: z.date(),
           }),
         })
         .describe("User data"),

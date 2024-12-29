@@ -20,6 +20,9 @@ const createUserSchema = {
             .string()
             .describe("User created successfully")
             .default("User created successfully"),
+          data: z.object({
+            id: z.string(),
+          }),
         })
         .describe("User created"),
     },

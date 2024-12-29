@@ -4,16 +4,15 @@ import { CreateUserModel } from "../models/createUser.model";
 import { CreateUserRepository } from "../repositories/CreateUserRepository";
 
 export class CreateUserController implements Controller<CreateUserModel> {
-  constructor(private createUserRepository: CreateUserRepository) {}
-
   async handle(request: HttpRequest<CreateUserModel>): Promise<HttpResponse> {
     const newUser = request.body;
 
     if (!newUser) {
       throw new Error(request.languagePack.commom.error.requiredFields);
     }
+    const repo = new CreateUserRepository();
 
-    const result = await this.createUserRepository.execute(newUser);
+    const result = await repo.execute(newUser);
 
     if (!result) {
       throw new Error(request.languagePack.user.createUser.error);
