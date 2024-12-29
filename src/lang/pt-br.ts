@@ -11,6 +11,9 @@ const ptBr: Translation = {
       success: "Usuário criado com sucesso!",
       error: "Erro ao criar usuário",
     },
+    findUser: {
+      notFound: "Usuário não encontrado",
+    },
   },
 };
 

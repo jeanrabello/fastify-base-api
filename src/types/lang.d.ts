@@ -9,5 +9,8 @@ export type Translation = {
       success: string;
       error: string;
     };
+    findUser: {
+      notFound: string;
+    };
   };
 };

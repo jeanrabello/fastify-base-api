@@ -11,6 +11,9 @@ const enUs: Translation = {
       success: "User created successfully!",
       error: "Error creating user",
     },
+    findUser: {
+      notFound: "User not found",
+    },
   },
 };
 
