@@ -9,7 +9,7 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
-import { connectToDatabase } from "./loaders/database";
+import { initializeLoaders } from "./loaders/index";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -22,15 +22,22 @@ app.register(fastifyCors, {
 
 swaggerPlugin(app);
 translationMiddleware(app);
+
 app.register(routes);
-connectToDatabase().then(() => {
-  app.listen({ port: config.app.port }, (err, address) => {
-    if (err) {
-      app.log.error(err);
-      process.exit(1);
-    }
+
+const startServer = async () => {
+  try {
+    await initializeLoaders();
+
+    const address = await app.listen({ port: config.app.port });
     console.log(`Server listening at ${address}`);
-  });
-});
+  } catch (err) {
+    app.log.error(err);
+    console.error("Failed to start application:", err);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 export default app;
