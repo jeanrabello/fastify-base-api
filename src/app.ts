@@ -29,14 +29,14 @@ const startServer = async () => {
   try {
     await initializeLoaders();
 
-    const appConfig = { port: config.app.port, host: config.app.host }
+    const appConfig = { port: config.app.port, host: config.app.host };
 
     const address = await app.listen(appConfig);
     console.log(`Server listening at ${address}`);
   } catch (err) {
     app.log.error(err);
     console.error("Failed to start application:", err);
-    process.exit(1);
+    process.exit(1);  // Força o contêiner a sair com erro
   }
 };
 

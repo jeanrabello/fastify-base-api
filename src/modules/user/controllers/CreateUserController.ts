@@ -2,6 +2,7 @@ import { Controller } from "@src/types/controller";
 import { HttpRequest, HttpResponse } from "@src/types/http";
 import { CreateUserModel } from "../models/createUser.model";
 import { CreateUserRepository } from "../repositories/CreateUserRepository";
+import { publishToQueue } from "@utils/publishToQueue";
 export class CreateUserController implements Controller<CreateUserModel> {
   private createUserRepository: CreateUserRepository;
 
@@ -21,6 +22,12 @@ export class CreateUserController implements Controller<CreateUserModel> {
     if (!result) {
       throw new Error(request.languagePack.user.createUser.error);
     }
+
+    publishToQueue('email', {
+      email: result.email,
+      subject: "Account Creation",
+      content: "Welcome to the FastifyAPI"
+    })
 
     return {
       statusCode: 201,

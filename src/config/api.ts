@@ -7,7 +7,7 @@ const environment = (process.env.NODE_ENV || "development") as Environment;
 const getConfig = (): Config => {
   const config: Config = {
     app: {
-      name: process.env.APP_NAME || "fastifyAPI",
+      name: process.env.APP_NAME || "FastifyAPI",
       port: Number(process.env.APP_PORT) || 3000,
       env: environment,
       host: process.env.APP_HOST || "127.0.0.1"
@@ -20,6 +20,16 @@ const getConfig = (): Config => {
       dbName: process.env.MONGO_DB_NAME || "fastifyAPI",
       user: process.env.MONGO_INITDB_ROOT_USERNAME || "root",
       password: process.env.MONGO_INITDB_ROOT_PASSWORD || "root",
+    },
+    rabbitmq: {
+      uri: process.env.RABBITMQ_URL || "amqp://root:root@rabbitmq:5672",
+      user: process.env.RABBITMQ_DEFAULT_USER || "root",
+      pass: process.env.RABBITMQ_DEFAULT_PASS || "root",
+    },
+    nodemailer: {
+      user: process.env.EMAIL_USER || "",
+      pass: process.env.EMAIL_PASS || "",
+      service: process.env.EMAIL_SERVICE || "gmail",
     },
   };
 
