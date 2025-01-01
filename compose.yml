@@ -11,6 +11,28 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - fastifi_api_network
 
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: dockerfile
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    ports:
+      - "3000:3000"
+    command: npm run start
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - mongodb
+    networks:
+      - fastifi_api_network
 volumes:
   mongodb_data:
+networks:
+  fastifi_api_network:

@@ -10,6 +10,7 @@ const getConfig = (): Config => {
       name: process.env.APP_NAME || "fastifyAPI",
       port: Number(process.env.APP_PORT) || 3000,
       env: environment,
+      host: process.env.APP_HOST || "127.0.0.1"
     },
     swagger: {
       enabled: environment === "development",

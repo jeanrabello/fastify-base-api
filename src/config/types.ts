@@ -5,6 +5,7 @@ export interface Config {
     name: string;
     port: number;
     env: Environment;
+    host: string;
   };
   swagger: {
     enabled: boolean;

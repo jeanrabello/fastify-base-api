@@ -29,7 +29,9 @@ const startServer = async () => {
   try {
     await initializeLoaders();
 
-    const address = await app.listen({ port: config.app.port });
+    const appConfig = { port: config.app.port, host: config.app.host }
+
+    const address = await app.listen(appConfig);
     console.log(`Server listening at ${address}`);
   } catch (err) {
     app.log.error(err);
