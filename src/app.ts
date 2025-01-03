@@ -36,7 +36,7 @@ const startServer = async () => {
   } catch (err) {
     app.log.error(err);
     console.error("Failed to start application:", err);
-    process.exit(1);  // Força o contêiner a sair com erro
+    process.exit(1); 
   }
 };
 

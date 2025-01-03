@@ -13,7 +13,7 @@ export const emailConsumer = async (queue: string): Promise<void> => {
   try {
     channel.consume(
       queue,
-      async (msg) => {
+      async (msg) => { 
         if (msg) {
           const message = JSON.parse(msg.content.toString());
           try {
