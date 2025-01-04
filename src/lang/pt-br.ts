@@ -17,4 +17,4 @@ const ptBr: Translation = {
   },
 };
 
-export default ptBr;
+module.exports = ptBr;

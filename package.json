@@ -7,15 +7,16 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "start": "tsx watch ./src/server.ts",
+    "start": "node ./dist/server.js",
+    "dev": "tsx watch ./src/server.ts",
     "service:email": "tsx watch ./src/services/EmailService/index.ts",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "services:up": "docker compose up -d ",
-    "services:down": "docker compose down",
-    "services:stop": "docker compose stop"
+    "compose:dev": "docker compose -f compose.dev.yml up -d --build",
+    "compose:prod": "docker compose -f compose.prod.yml up -d ",
+    "build": "tsc && tsc-alias"
   },
   "keywords": [],
   "author": "Jean Rabello",
@@ -38,6 +39,7 @@
     "@types/nodemailer": "^6.4.17",
     "cross-env": "^7.0.3",
     "prettier": "^3.4.2",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   }

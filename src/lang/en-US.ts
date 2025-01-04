@@ -17,4 +17,4 @@ const enUs: Translation = {
   },
 };
 
-export default enUs;
+module.exports = enUs;

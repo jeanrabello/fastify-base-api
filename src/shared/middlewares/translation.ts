@@ -19,8 +19,10 @@ const translationMiddleware = async (app: FastifyInstance) => {
       }
     }
 
+    const fileExt = process.env.NODE_ENV !== "development" ? "js" : "ts";
+
     const langFilePath = pathToFileURL(
-      path.join(__dirname, `../../lang/${langPackCode}.ts`),
+      path.join(__dirname, `../../lang/${langPackCode}.${fileExt}`),
     ).href;
 
     const langPack = await import(langFilePath);

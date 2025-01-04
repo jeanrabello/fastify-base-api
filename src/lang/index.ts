@@ -1,4 +1,4 @@
-import enUs from "./en-US";
-import ptBr from "./pt-br";
+import * as enUs from "./en-US";
+import * as ptBr from "./pt-br";
 
 export { enUs, ptBr };
