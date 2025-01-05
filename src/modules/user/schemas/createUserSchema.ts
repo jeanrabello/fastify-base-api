@@ -25,6 +25,24 @@ const createUserSchema = {
           }),
         })
         .describe("User created"),
+      400: z
+        .object({
+          statusCode: z.number().default(400),
+          message: z
+            .string()
+            .describe("Required fields not filled")
+            .default("Required fields not filled"),
+        })
+        .describe("Required fields not filled"),
+      409: z
+        .object({
+          statusCode: z.number().default(409),
+          message: z
+            .string()
+            .describe("Email already registered")
+            .default("Email already registered"),
+        })
+        .describe("Email already registered"),
     },
   },
 };

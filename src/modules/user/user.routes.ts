@@ -6,12 +6,16 @@ import { findUserSchema } from "./schemas/findUserSchema";
 import { FindUserController } from "./controllers/FindUserController";
 import { CreateUserRepository } from "./repositories/CreateUserRepository";
 import { FindUserRepository } from "./repositories/FindUserRepository";
+import { FindUserByEmailRepository } from "./repositories/FindUserByEmailRepository";
 
 const userRoutes = (app: FastifyTypedInstance) => {
   app.post(
     "/",
     createUserSchema,
-    routeAdapter(new CreateUserController(new CreateUserRepository())),
+    routeAdapter(new CreateUserController({
+      createUserRepository: new CreateUserRepository(),
+      findUserByEmailRepository: new FindUserByEmailRepository(),
+    })),
   );
   app.get(
     "/:id",

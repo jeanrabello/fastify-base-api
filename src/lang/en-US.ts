@@ -10,6 +10,7 @@ const enUs: Translation = {
     createUser: {
       success: "User created successfully!",
       error: "Error creating user",
+      emailAlreadyRegistered: "Email already registered",
     },
     findUser: {
       notFound: "User not found",

@@ -23,6 +23,15 @@ const findUserSchema = {
           }),
         })
         .describe("User data"),
+      400: z
+        .object({
+          statusCode: z.number().default(400),
+          message: z
+            .string()
+            .describe("Required fields not filled")
+            .default("Required fields not filled"),
+        })
+        .describe("Required fields not filled"),
     },
   },
 };

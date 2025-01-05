@@ -10,6 +10,7 @@ const ptBr: Translation = {
     createUser: {
       success: "Usuário criado com sucesso!",
       error: "Erro ao criar usuário",
+      emailAlreadyRegistered: "E-mail já cadastrado",
     },
     findUser: {
       notFound: "Usuário não encontrado",

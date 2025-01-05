@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { Controller } from "../../types/controller";
 import { HttpResponse } from "@src/types/http";
+import CustomError from "../classes/CustomError";
 
 export const routeAdapter = (controller: Controller) => {
   return async (request: FastifyRequest, reply: FastifyReply) => {
@@ -18,6 +19,10 @@ export const routeAdapter = (controller: Controller) => {
           .send({ message: httpResponse.message });
       }
     } catch (error: any) {
+      if(error instanceof CustomError) {
+        reply.status(error.statusCode).send({ message: error.message })
+        return;
+      };
       reply.status(500).send({ message: error.message });
     }
   };

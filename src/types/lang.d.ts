@@ -8,6 +8,7 @@ export type Translation = {
     createUser: {
       success: string;
       error: string;
+      emailAlreadyRegistered: string;
     };
     findUser: {
       notFound: string;

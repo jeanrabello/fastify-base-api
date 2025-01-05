@@ -1,6 +1,7 @@
 import { Controller } from "@src/types/controller";
 import { HttpRequest, HttpResponse } from "@src/types/http";
 import { FindUserRepository } from "../repositories/FindUserRepository";
+import CustomError from "@src/shared/classes/CustomError";
 
 export class FindUserController implements Controller<null> {
   private findUserRepository: FindUserRepository;
@@ -13,14 +14,10 @@ export class FindUserController implements Controller<null> {
     const user = request.params;
 
     if (!user || !user.id) {
-      throw new Error(request.languagePack.commom.error.requiredFields);
+      throw new CustomError(request.languagePack.commom.error.requiredFields, 400);
     }
 
     const result = await this.findUserRepository.execute(user.id);
-
-    if (!result) {
-      throw new Error(request.languagePack.user.findUser.notFound);
-    }
 
     return {
       statusCode: 200,
