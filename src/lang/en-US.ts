@@ -19,7 +19,8 @@ const enUs: Translation = {
         },
       },
       email: {
-        subject: "Welcome to the platform",},
+        subject: "Welcome to the platform",
+      },
     },
     createUser: {
       success: "User created successfully!",

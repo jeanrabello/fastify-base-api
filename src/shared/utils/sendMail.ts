@@ -8,7 +8,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMail = async (to: string, subject: string, html: string = "Welcome to FastifyAPI") => {
+const sendMail = async (
+  to: string,
+  subject: string,
+  html: string = "Welcome to FastifyAPI",
+) => {
   try {
     const mailOptions = {
       from: `FastifyAPI <${process.env.EMAIL_USER}>`,

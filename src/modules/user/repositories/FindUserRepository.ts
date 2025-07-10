@@ -10,7 +10,7 @@ export class FindUserRepository extends AbstractRepository<
     const collection = this.db.collection<User>("users");
 
     const user = await collection.findOne({ _id: new ObjectId(id) });
-    
+
     if (!user) return null;
 
     const result: Partial<User> = {

@@ -22,7 +22,7 @@ export class FindUserController implements Controller<null> {
 
     const user = await this.findUserRepository.execute(userRequest.id);
 
-    if(!user) {
+    if (!user) {
       throw new CustomError(request.languagePack.user.findUser.notFound, 400);
     }
 

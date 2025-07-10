@@ -32,7 +32,7 @@ const findUserSchema = {
             .default("Required fields not filled"),
         })
         .describe("Required fields not filled"),
-      500: z.object({})
+      500: z.object({}),
     },
   },
 };
