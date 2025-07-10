@@ -12,7 +12,8 @@ const translationMiddleware = async (app: FastifyInstance) => {
       const lang = acceptLanguage.split(",")[0].trim();
       const availableLangs = fs
         .readdirSync(path.join(__dirname, "../../lang"))
-        .map((file) => path.parse(file).name);
+        .map((file) => path.parse(file).name)
+        .filter((lang) => lang !== "index");
 
       if (availableLangs.includes(lang)) {
         langPackCode = lang;
@@ -27,6 +28,7 @@ const translationMiddleware = async (app: FastifyInstance) => {
 
     const langPack = await import(langFilePath);
     request.languagePack = langPack.default;
+    request.lang = langPackCode;
   });
 };
 

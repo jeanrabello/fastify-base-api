@@ -12,10 +12,12 @@ const userRoutes = (app: FastifyTypedInstance) => {
   app.post(
     "/",
     createUserSchema,
-    routeAdapter(new CreateUserController({
-      createUserRepository: new CreateUserRepository(),
-      findUserByEmailRepository: new FindUserByEmailRepository(),
-    })),
+    routeAdapter(
+      new CreateUserController({
+        createUserRepository: new CreateUserRepository(),
+        findUserByEmailRepository: new FindUserByEmailRepository(),
+      }),
+    ),
   );
   app.get(
     "/:id",

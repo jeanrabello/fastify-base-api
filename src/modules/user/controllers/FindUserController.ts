@@ -11,17 +11,24 @@ export class FindUserController implements Controller<null> {
   }
 
   async handle(request: HttpRequest<null>): Promise<HttpResponse> {
-    const user = request.params;
+    const userRequest = request.params;
 
-    if (!user || !user.id) {
-      throw new CustomError(request.languagePack.commom.error.requiredFields, 400);
+    if (!userRequest || !userRequest.id) {
+      throw new CustomError(
+        request.languagePack.commom.error.requiredFields,
+        400,
+      );
     }
 
-    const result = await this.findUserRepository.execute(user.id);
+    const user = await this.findUserRepository.execute(userRequest.id);
+
+    if (!user) {
+      throw new CustomError(request.languagePack.user.findUser.notFound, 400);
+    }
 
     return {
       statusCode: 200,
-      data: result,
+      data: user,
     };
   }
 }

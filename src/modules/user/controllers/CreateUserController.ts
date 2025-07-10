@@ -4,6 +4,7 @@ import { CreateUserModel } from "../models/createUser.model";
 import { CreateUserRepository } from "../repositories/CreateUserRepository";
 import { FindUserByEmailRepository } from "../repositories/FindUserByEmailRepository";
 import CustomError from "@src/shared/classes/CustomError";
+import { sendMail } from "@utils/sendMail";
 
 interface ICreateUserController {
   createUserRepository: CreateUserRepository;
@@ -23,13 +24,19 @@ export class CreateUserController implements Controller<CreateUserModel> {
     const newUser = request.body;
 
     if (!newUser) {
-      throw new CustomError(request.languagePack.commom.error.requiredFields, 400);
+      throw new CustomError(
+        request.languagePack.commom.error.requiredFields,
+        400,
+      );
     }
 
     const user = await this.findUserByEmailRepository.execute(newUser.email);
 
     if (user) {
-      throw new CustomError(request.languagePack.user.createUser.emailAlreadyRegistered, 409);
+      throw new CustomError(
+        request.languagePack.user.createUser.emailAlreadyRegistered,
+        409,
+      );
     }
 
     const result = await this.createUserRepository.execute(newUser);
@@ -37,6 +44,8 @@ export class CreateUserController implements Controller<CreateUserModel> {
     if (!result) {
       throw new CustomError(request.languagePack.user.createUser.error, 500);
     }
+
+    sendMail(result.email, request.languagePack.user.register.email.subject);
 
     return {
       statusCode: 201,
