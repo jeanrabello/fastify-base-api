@@ -16,11 +16,6 @@ export interface Config {
     user: string;
     password: string;
   };
-  rabbitmq: {
-    uri: string;
-    user: string;
-    pass: string;
-  };
   nodemailer: {
     user: string;
     pass: string;

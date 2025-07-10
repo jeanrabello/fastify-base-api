@@ -19,10 +19,10 @@ export const routeAdapter = (controller: Controller) => {
           .send({ message: httpResponse.message });
       }
     } catch (error: any) {
-      if(error instanceof CustomError) {
-        reply.status(error.statusCode).send({ message: error.message })
+      if (error instanceof CustomError) {
+        reply.status(error.statusCode).send({ message: error.message });
         return;
-      };
+      }
       reply.status(500).send({ message: error.message });
     }
   };
