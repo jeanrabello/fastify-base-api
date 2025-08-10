@@ -3,7 +3,7 @@ import config from "@config/api";
 
 let db: Db;
 
-const connectToDatabase = async () => {
+const connectToMongoDatabase = async () => {
   const { dbName, uri } = config.db;
 
   const client = new MongoClient(uri);
@@ -13,11 +13,11 @@ const connectToDatabase = async () => {
   console.log(`Connected to MongoDB: ${dbName}`);
 };
 
-const getDb = (): Db => {
+const getMongoDb = (): Db => {
   if (!db) {
     throw new Error("Database not initialized");
   }
   return db;
 };
 
-export { connectToDatabase, getDb };
+export { connectToMongoDatabase, getMongoDb };

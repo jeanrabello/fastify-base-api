@@ -1,5 +1,5 @@
-import { connectToDatabase } from "./database";
+import { connectToMongoDatabase } from "./mongoDatabase";
 
 export const initializeLoaders = async () => {
-  await connectToDatabase();
+  await connectToMongoDatabase();
 };

@@ -7,20 +7,23 @@ const findUserSchema = {
     headers: z.object({
       "accept-language": z.string().optional().default("en-US"),
     }),
-    params: z.object({
-      id: z.string(),
-    }),
+    params: z
+      .object({
+        id: z.string(),
+      })
+      .required(),
     response: {
       200: z
         .object({
           statusCode: z.number().default(200),
-          data: z.object({
-            id: z.string(),
-            username: z.string(),
-            email: z.string().email(),
-            createdAt: z.date(),
-            updatedAt: z.date(),
-          }),
+          message: z.string(),
+          data: z
+            .object({
+              id: z.string(),
+              username: z.string(),
+              email: z.string().email(),
+            })
+            .nullable(),
         })
         .describe("User data"),
       400: z
@@ -32,7 +35,13 @@ const findUserSchema = {
             .default("Required fields not filled"),
         })
         .describe("Required fields not filled"),
-      500: z.object({}),
+      500: z.object({
+        statusCode: z.number().default(500),
+        message: z
+          .string()
+          .describe("Internal server error")
+          .default("Internal server error"),
+      }),
     },
   },
 };

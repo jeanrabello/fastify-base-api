@@ -1,0 +1,39 @@
+import { CreateUserRequestModel } from "@modules/user/models/Request/CreateUserRequest.model";
+import { IUserRepository } from "@modules/user/types/IUserRepository";
+import CustomError from "@src/shared/classes/CustomError";
+import { IUseCase } from "@src/shared/classes/IUseCase";
+import { User } from "@src/shared/entities/user.entity";
+import { IUserTranslation } from "../types/IUserTranslation";
+
+interface ICreateUserUseCase {
+  userRepository: IUserRepository;
+}
+
+export class CreateUserUseCase implements IUseCase {
+  private userRepository: IUserRepository;
+
+  constructor({ userRepository }: ICreateUserUseCase) {
+    this.userRepository = userRepository;
+  }
+
+  async execute(input: CreateUserRequestModel): Promise<Partial<User>> {
+    if (!input || !input.email || !input.password || !input.username) {
+      throw new CustomError("shared.error.requiredFields", 400);
+    }
+
+    const exists = await this.userRepository.findByEmail(input.email);
+    if (exists) {
+      throw new CustomError<IUserTranslation>(
+        "user.createUser.emailAlreadyRegistered",
+        409,
+      );
+    }
+    const user = await this.userRepository.save(input);
+
+    if (!user) {
+      throw new CustomError<IUserTranslation>("user.createUser.error", 500);
+    }
+
+    return user;
+  }
+}

@@ -29,6 +29,8 @@ async function swaggerPlugin(app: FastifyInstance) {
       deepLinking: false,
     },
   });
+
+  console.log("Swagger enabled at http://localhost:3000/api/docs");
 }
 
 export { swaggerPlugin };

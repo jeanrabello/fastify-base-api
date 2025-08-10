@@ -14,12 +14,13 @@
     "moduleResolution": "nodenext",
     "paths": {
       "@config/*": ["./src/config/*"],
-      "@lang/*": ["./src/lang/*"],
       "@middlewares/*": ["./src/shared/middlewares/*"],
       "@plugins/*": ["./src/plugins/*"],
       "@modules/*": ["./src/modules/*"],
       "@utils/*": ["./src/shared/utils/*"],
       "@src/*": ["./src/*"]
-    }
+    },
+    "isolatedModules": true,
+    "types": ["@types/jest"]
   }
 }
