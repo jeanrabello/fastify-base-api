@@ -1,4 +1,4 @@
-import { CreateUserModel } from "@modules/user/models/Request/CreateUserRequest.model";
+import { CreateUserRequestModel } from "@modules/user/models/Request/CreateUserRequest.model";
 import { User } from "@src/shared/entities/user.entity";
 
 export const makeFindUserByEmailRepository = () => ({
@@ -6,5 +6,5 @@ export const makeFindUserByEmailRepository = () => ({
 });
 
 export const makeCreateUserRepository = () => ({
-  execute: jest.fn<Promise<User | null>, [CreateUserModel]>(),
+  execute: jest.fn<Promise<User | null>, [CreateUserRequestModel]>(),
 });

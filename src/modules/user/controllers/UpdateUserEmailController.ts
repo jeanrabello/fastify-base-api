@@ -4,14 +4,16 @@ import { HttpRequest, HttpResponse } from "@src/shared/types/http";
 import { UpdateUserEmailRequestModel } from "../models/Request/UpdateUserEmailRequest.model";
 import { UpdateUserEmailResponseModel } from "../models/Response/UpdateUserEmailResponse.model";
 import { UpdateUserEmailUseCase } from "../useCases/UpdateUserEmailUseCase";
+import { UserIdParamsModel } from "../models/Request/UserIdParams.model";
 
 interface IUpdateUserEmailController {
   updateUserEmailUseCase: UpdateUserEmailUseCase;
 }
 
 export class UpdateUserEmailController extends AbstractController<
+  IUserTranslation,
   UpdateUserEmailRequestModel,
-  IUserTranslation
+  UserIdParamsModel
 > {
   private updateUserEmailUseCase: UpdateUserEmailUseCase;
 
@@ -21,9 +23,14 @@ export class UpdateUserEmailController extends AbstractController<
   }
 
   async handle(
-    request: HttpRequest<UpdateUserEmailRequestModel, IUserTranslation>,
+    request: HttpRequest<
+      UpdateUserEmailRequestModel,
+      UserIdParamsModel,
+      undefined,
+      IUserTranslation
+    >,
   ): Promise<HttpResponse<IUserTranslation, UpdateUserEmailResponseModel>> {
-    const userId = request.params?.id;
+    const userId = request.params?.id || "";
     const email = request.body?.email;
     const updatedUser = await this.updateUserEmailUseCase.execute({
       userId,

@@ -22,5 +22,9 @@ export interface IUserTranslation extends Translation {
       error: string;
       updated: string;
     };
+    listUsers: {
+      success: string;
+      error: string;
+    };
   };
 }

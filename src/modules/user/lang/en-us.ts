@@ -32,6 +32,10 @@ const enUs: IUserTranslation = {
       error: "Error updating email",
       updated: "Email updated successfully",
     },
+    listUsers: {
+      success: "Users list retrieved successfully",
+      error: "Error listing users",
+    },
   },
 };
 

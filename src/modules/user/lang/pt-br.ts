@@ -32,6 +32,10 @@ const ptBr: IUserTranslation = {
       error: "Erro ao atualizar e-mail",
       updated: "E-mail atualizado com sucesso",
     },
+    listUsers: {
+      success: "Lista de usuários obtida com sucesso",
+      error: "Erro ao listar usuários",
+    },
   },
 };
 

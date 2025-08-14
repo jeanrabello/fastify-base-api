@@ -9,8 +9,8 @@ interface ICreateUserController {
 }
 
 export class CreateUserController extends AbstractController<
-  CreateUserRequestModel,
-  IUserTranslation
+  IUserTranslation,
+  CreateUserRequestModel
 > {
   private createUserUseCase: CreateUserUseCase;
 

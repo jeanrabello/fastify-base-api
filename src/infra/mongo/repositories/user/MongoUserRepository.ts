@@ -3,6 +3,10 @@ import { IUserRepository } from "@modules/user/types/IUserRepository";
 import { User } from "@src/shared/entities/user.entity";
 import { ObjectId } from "mongodb";
 import { AbstractMongoRepository } from "../AbstractMongoRepository";
+import {
+  PaginationParams,
+  PaginatedResult,
+} from "@src/shared/types/pagination";
 
 export class MongoUserRepository
   extends AbstractMongoRepository
@@ -64,6 +68,38 @@ export class MongoUserRepository
       .collection<User>(this.collectionName)
       .deleteOne({ _id: new ObjectId(id) });
     return result.deletedCount > 0;
+  }
+
+  async findPaginated(
+    params: PaginationParams,
+  ): Promise<PaginatedResult<Partial<User>>> {
+    const page = params.page && params.page > 0 ? params.page : 1;
+    const size = params.size && params.size > 0 ? params.size : 10;
+    const skip = (page - 1) * size;
+
+    const collection = this.db.collection<User>(this.collectionName);
+    const totalItems = await collection.countDocuments();
+    const cursor = collection.find().skip(skip).limit(size);
+    const docs = await cursor.toArray();
+
+    const content: Partial<User>[] = docs.map((u) => ({
+      id: u._id.toString(),
+      username: u.username,
+      email: u.email,
+      createdAt: u.createdAt,
+      updatedAt: u.updatedAt,
+    }));
+
+    const totalPages = Math.ceil(totalItems / size);
+
+    return {
+      totalItems,
+      nextPage: page < totalPages ? page + 1 : null,
+      previousPage: page > 1 && page <= totalPages ? page - 1 : null,
+      page,
+      size,
+      content,
+    };
   }
 
   async updateUserEmail(

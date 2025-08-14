@@ -9,9 +9,12 @@ interface IDeleteUserController {
   deleteUserByIdUseCase: any;
 }
 
+import { UserIdParamsModel } from "@modules/user/models/Request/UserIdParams.model";
+
 export class DeleteUserController extends AbstractController<
+  IUserTranslation,
   null,
-  IUserTranslation
+  UserIdParamsModel
 > {
   private findUserByIdUseCase: FindUserByIdUseCase;
   private deleteUserByIdUseCase: DeleteUserByIdUseCase;
@@ -23,9 +26,9 @@ export class DeleteUserController extends AbstractController<
   }
 
   async handle(
-    request: HttpRequest<null, IUserTranslation>,
+    request: HttpRequest<null, UserIdParamsModel, undefined, IUserTranslation>,
   ): Promise<HttpResponse<IUserTranslation, any>> {
-    const userRequestId = request.params?.id;
+    const userRequestId = request.params?.id || "";
     const user = await this.findUserByIdUseCase.execute(userRequestId);
     if (!user) {
       return {
@@ -33,7 +36,7 @@ export class DeleteUserController extends AbstractController<
         message: "user.deleteUser.notFound",
       };
     }
-    const isDeleted = await this.deleteUserByIdUseCase.execute(user.id);
+    const isDeleted = await this.deleteUserByIdUseCase.execute(userRequestId);
     return {
       statusCode: isDeleted ? 200 : 400,
       message: `user.deleteUser.${isDeleted ? "deleted" : "error"}`,

@@ -3,6 +3,7 @@ import { IUserRepository } from "@modules/user/types/IUserRepository";
 import CustomError from "@src/shared/classes/CustomError";
 import { IUseCase } from "@src/shared/classes/IUseCase";
 import { User } from "@src/shared/entities/user.entity";
+import { hashPassword } from "@src/shared/utils";
 import { IUserTranslation } from "../types/IUserTranslation";
 
 interface ICreateUserUseCase {
@@ -28,7 +29,15 @@ export class CreateUserUseCase implements IUseCase {
         409,
       );
     }
-    const user = await this.userRepository.save(input);
+
+    // Criptografar a senha antes de salvar no banco
+    const hashedPassword = await hashPassword(input.password);
+    const userDataWithHashedPassword = {
+      ...input,
+      password: hashedPassword,
+    };
+
+    const user = await this.userRepository.save(userDataWithHashedPassword);
 
     if (!user) {
       throw new CustomError<IUserTranslation>("user.createUser.error", 500);

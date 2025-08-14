@@ -21,4 +21,7 @@ export interface Config {
     pass: string;
     service: string;
   };
+  security: {
+    bcryptSaltRounds: number;
+  };
 }

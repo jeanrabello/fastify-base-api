@@ -26,6 +26,9 @@ const getConfig = (): Config => {
       pass: process.env.EMAIL_PASS || "",
       service: process.env.EMAIL_SERVICE || "gmail",
     },
+    security: {
+      bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) || 12,
+    },
   };
 
   return config;

@@ -4,9 +4,7 @@ import { AbstractController } from "../classes/AbstractController";
 import { Translation } from "@src/shared/types/lang";
 import { IModel } from "../classes/IModel";
 
-export const routeAdapter = (
-  controller: AbstractController<IModel | null, Translation>,
-) => {
+export const routeAdapter = (controller: AbstractController<Translation>) => {
   return async (request: FastifyRequest, reply: FastifyReply) => {
     controller.languagePack = request.languagePack;
     const httpResponse: HttpResponse = await controller.handle(
