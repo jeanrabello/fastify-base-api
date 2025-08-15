@@ -2,19 +2,19 @@ import bcrypt from "bcrypt";
 import config from "@src/config/api";
 
 /**
- * Gera o hash da senha usando bcrypt
- * @param password - Senha em texto plano
- * @returns Promise<string> - Hash da senha
+ * Generates password hash using bcrypt
+ * @param password - password as plain text
+ * @returns Promise<string> - Hash of the password
  */
 export const hashPassword = async (password: string): Promise<string> => {
   return bcrypt.hash(password, config.security.bcryptSaltRounds);
 };
 
 /**
- * Compara uma senha em texto plano com um hash
- * @param password - Senha em texto plano
- * @param hash - Hash da senha
- * @returns Promise<boolean> - True se a senha corresponder ao hash
+ * Compares a plain text password with a hash
+ * @param password - Plain text password
+ * @param hash - Password hash
+ * @returns Promise<boolean> - True if the password matches the hash
  */
 export const comparePassword = async (
   password: string,

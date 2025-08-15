@@ -20,7 +20,12 @@ export class CreateUserController extends AbstractController<
   }
 
   async handle(
-    request: HttpRequest<CreateUserRequestModel, IUserTranslation>,
+    request: HttpRequest<
+      CreateUserRequestModel,
+      undefined,
+      undefined,
+      IUserTranslation
+    >,
   ): Promise<HttpResponse<IUserTranslation>> {
     const newUser = request.body as CreateUserRequestModel;
     const user = await this.createUserUseCase.execute(newUser);

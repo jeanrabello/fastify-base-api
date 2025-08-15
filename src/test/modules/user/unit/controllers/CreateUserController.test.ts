@@ -1,4 +1,3 @@
-// src/test/modules/user/unit/CreateUserUseCase.test.ts
 import { CreateUserUseCase } from "@modules/user/useCases/CreateUserUseCase";
 import { validCreateUserModel } from "../../mocks/models/CreateUser.mock";
 import { CreateUserController } from "@modules/user/controllers/CreateUserController";
@@ -25,7 +24,12 @@ describe("CreateUserController", () => {
     const req = {
       body: validCreateUserModel,
       languagePack,
-    } as HttpRequest<typeof validCreateUserModel, IUserTranslation>;
+    } as HttpRequest<
+      typeof validCreateUserModel,
+      undefined,
+      undefined,
+      IUserTranslation
+    >;
 
     const { data, message, statusCode }: HttpResponse =
       await controller.handle(req);

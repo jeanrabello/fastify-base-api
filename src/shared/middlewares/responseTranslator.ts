@@ -20,7 +20,10 @@ export default async function responseTranslator(app: FastifyInstance) {
           };
           return done(null, JSON.stringify(newBody));
         }
-      } catch {}
+      } catch (err) {
+        // Log the error to aid debugging of response translation issues
+        console.error("Error during response translation:", err);
+      }
       done(null, payload);
     },
   );
