@@ -30,19 +30,20 @@ export class CreateUserUseCase implements IUseCase {
       );
     }
 
-    // Criptografar a senha antes de salvar no banco
     const hashedPassword = await hashPassword(input.password);
     const userDataWithHashedPassword = {
       ...input,
       password: hashedPassword,
     };
 
-    const user = await this.userRepository.save(userDataWithHashedPassword);
+    const createdUser = await this.userRepository.save(
+      userDataWithHashedPassword,
+    );
 
-    if (!user) {
+    if (!createdUser) {
       throw new CustomError<IUserTranslation>("user.createUser.error", 500);
     }
 
-    return user;
+    return createdUser;
   }
 }

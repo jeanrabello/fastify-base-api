@@ -5,8 +5,8 @@ import { FindUserByIdUseCase } from "../useCases/FindUserByIdUseCase";
 import { DeleteUserByIdUseCase } from "../useCases/DeleteUserByIdUseCase";
 
 interface IDeleteUserController {
-  findUserByIdUseCase: any;
-  deleteUserByIdUseCase: any;
+  findUserByIdUseCase: FindUserByIdUseCase;
+  deleteUserByIdUseCase: DeleteUserByIdUseCase;
 }
 
 import { UserIdParamsModel } from "@modules/user/models/Request/UserIdParams.model";

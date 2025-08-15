@@ -9,7 +9,6 @@ import CustomError from "@src/shared/classes/CustomError";
 import { CreateUserRequestModel } from "@modules/user/models/Request/CreateUserRequest.model";
 import { hashPassword } from "@src/shared/utils";
 
-// Mock da função hashPassword
 jest.mock("@src/shared/utils", () => ({
   ...jest.requireActual("@src/shared/utils"),
   hashPassword: jest.fn(),
@@ -23,7 +22,6 @@ describe("CreateUserUseCase", () => {
   >;
 
   beforeEach(() => {
-    // Reset dos mocks
     jest.clearAllMocks();
 
     userRepository = {
@@ -79,8 +77,9 @@ describe("CreateUserUseCase", () => {
     );
   });
 
-  it("Should return error if user not found", async () => {
+  it("Should return error if user could not be created", async () => {
     userRepository.findByEmail.mockResolvedValue(null);
+    userRepository.save.mockResolvedValue(null);
     await expect(useCase.execute(validCreateUserModel)).rejects.toEqual(
       new CustomError<IUserTranslation>("user.createUser.error"),
     );
