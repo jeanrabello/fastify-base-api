@@ -1,56 +1,38 @@
-import { Controller } from "@src/types/controller";
-import { HttpRequest, HttpResponse } from "@src/types/http";
-import { CreateUserModel } from "../models/createUser.model";
-import { CreateUserRepository } from "../repositories/CreateUserRepository";
-import { FindUserByEmailRepository } from "../repositories/FindUserByEmailRepository";
-import CustomError from "@src/shared/classes/CustomError";
-import { sendMail } from "@utils/sendMail";
+import { HttpRequest, HttpResponse } from "@src/shared/types/http";
+import { CreateUserRequestModel } from "../models/Request/CreateUserRequest.model";
+import { IUserTranslation } from "@modules/user/types/IUserTranslation";
+import { AbstractController } from "@src/shared/classes/AbstractController";
+import { CreateUserUseCase } from "@modules/user/useCases/CreateUserUseCase";
 
 interface ICreateUserController {
-  createUserRepository: CreateUserRepository;
-  findUserByEmailRepository: FindUserByEmailRepository;
+  createUserUseCase: CreateUserUseCase;
 }
 
-export class CreateUserController implements Controller<CreateUserModel> {
-  private createUserRepository: CreateUserRepository;
-  private findUserByEmailRepository: FindUserByEmailRepository;
+export class CreateUserController extends AbstractController<
+  IUserTranslation,
+  CreateUserRequestModel
+> {
+  private createUserUseCase: CreateUserUseCase;
 
-  constructor(repositories: ICreateUserController) {
-    this.createUserRepository = repositories.createUserRepository;
-    this.findUserByEmailRepository = repositories.findUserByEmailRepository;
+  constructor(dependencies: ICreateUserController) {
+    super();
+    this.createUserUseCase = dependencies.createUserUseCase;
   }
 
-  async handle(request: HttpRequest<CreateUserModel>): Promise<HttpResponse> {
-    const newUser = request.body;
-
-    if (!newUser) {
-      throw new CustomError(
-        request.languagePack.commom.error.requiredFields,
-        400,
-      );
-    }
-
-    const user = await this.findUserByEmailRepository.execute(newUser.email);
-
-    if (user) {
-      throw new CustomError(
-        request.languagePack.user.createUser.emailAlreadyRegistered,
-        409,
-      );
-    }
-
-    const result = await this.createUserRepository.execute(newUser);
-
-    if (!result) {
-      throw new CustomError(request.languagePack.user.createUser.error, 500);
-    }
-
-    sendMail(result.email, request.languagePack.user.register.email.subject);
-
+  async handle(
+    request: HttpRequest<
+      CreateUserRequestModel,
+      undefined,
+      undefined,
+      IUserTranslation
+    >,
+  ): Promise<HttpResponse<IUserTranslation>> {
+    const newUser = request.body as CreateUserRequestModel;
+    const user = await this.createUserUseCase.execute(newUser);
     return {
       statusCode: 201,
-      message: request.languagePack.user.createUser.success,
-      data: result,
+      message: "user.createUser.created",
+      data: user,
     };
   }
 }

@@ -10,6 +10,8 @@ import {
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import { initializeLoaders } from "./loaders/index";
+import responseTranslator from "@middlewares/responseTranslator";
+import errorHandler from "@middlewares/errorHandler";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -22,6 +24,8 @@ app.register(fastifyCors, {
 
 swaggerPlugin(app);
 translationMiddleware(app);
+responseTranslator(app);
+errorHandler(app);
 
 app.register(routes, { prefix: "/api" });
 

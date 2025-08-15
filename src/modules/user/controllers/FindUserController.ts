@@ -1,34 +1,46 @@
-import { Controller } from "@src/types/controller";
-import { HttpRequest, HttpResponse } from "@src/types/http";
-import { FindUserRepository } from "../repositories/FindUserRepository";
-import CustomError from "@src/shared/classes/CustomError";
+import { HttpRequest, HttpResponse } from "@src/shared/types/http";
+import { IUserTranslation } from "@modules/user/types/IUserTranslation";
+import { AbstractController } from "@src/shared/classes/AbstractController";
+import { FindUserByIdUseCase } from "../useCases/FindUserByIdUseCase";
+import { FindUserByIdResponseModel } from "../models/Response/FindUserByIdResponse.model";
 
-export class FindUserController implements Controller<null> {
-  private findUserRepository: FindUserRepository;
+interface IFindUserByIdController {
+  findUserByIdUseCase: FindUserByIdUseCase;
+}
 
-  constructor(repository: FindUserRepository) {
-    this.findUserRepository = repository;
+import { UserIdParamsModel } from "@modules/user/models/Request/UserIdParams.model";
+
+export class FindUserController extends AbstractController<
+  IUserTranslation,
+  null,
+  UserIdParamsModel
+> {
+  private findUserByIdUseCase: FindUserByIdUseCase;
+
+  constructor(dependencies: IFindUserByIdController) {
+    super();
+    this.findUserByIdUseCase = dependencies.findUserByIdUseCase;
   }
 
-  async handle(request: HttpRequest<null>): Promise<HttpResponse> {
-    const userRequest = request.params;
-
-    if (!userRequest || !userRequest.id) {
-      throw new CustomError(
-        request.languagePack.commom.error.requiredFields,
-        400,
-      );
-    }
-
-    const user = await this.findUserRepository.execute(userRequest.id);
-
+  async handle(
+    request: HttpRequest<null, UserIdParamsModel, undefined, IUserTranslation>,
+  ): Promise<HttpResponse<IUserTranslation, FindUserByIdResponseModel | null>> {
+    const userRequestId = request.params?.id || "";
+    const user = await this.findUserByIdUseCase.execute(userRequestId);
     if (!user) {
-      throw new CustomError(request.languagePack.user.findUser.notFound, 400);
+      return {
+        statusCode: 404,
+        message: "user.findUser.notFound",
+      };
     }
-
     return {
       statusCode: 200,
-      data: user,
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      } as FindUserByIdResponseModel,
+      message: "user.findUser.found",
     };
   }
 }
