@@ -5,12 +5,19 @@ export default async function responseTranslator(app: FastifyInstance) {
   app.addHook(
     "onSend",
     (request: FastifyRequest, reply: FastifyReply, payload, done) => {
+      let body: any = payload;
       try {
-        const body =
-          typeof payload === "string" ? JSON.parse(payload) : payload;
-        if (body) {
+        if (typeof payload === "string") {
+          try {
+            body = JSON.parse(payload);
+          } catch (parseErr) {
+            return done(null, payload);
+          }
+        }
+        if (body && typeof body === "object" && "message" in body) {
+          const languagePack = (request as any).languagePack;
           const message = getTranslationMessageFromPath(
-            request.languagePack,
+            languagePack,
             body.message || null,
           );
           const newBody = {

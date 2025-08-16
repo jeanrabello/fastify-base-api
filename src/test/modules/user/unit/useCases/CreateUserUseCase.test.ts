@@ -31,7 +31,7 @@ describe("CreateUserUseCase", () => {
       delete: jest.fn(),
       findPaginated: jest.fn(),
       updateUserEmail: jest.fn(),
-    };
+    } as unknown as jest.Mocked<IUserRepository>;
     useCase = new CreateUserUseCase({ userRepository });
   });
 

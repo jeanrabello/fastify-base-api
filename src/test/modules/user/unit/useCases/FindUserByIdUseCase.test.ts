@@ -9,6 +9,7 @@ describe("FindUserByIdUseCase", () => {
   let userRepository: jest.Mocked<IUserRepository>;
 
   beforeEach(() => {
+    // @ts-ignore
     userRepository = {
       save: jest.fn(),
       findByEmail: jest.fn(),

@@ -14,6 +14,21 @@ export class MongoUserRepository
 {
   private collectionName = "users";
 
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    const user = await this.db
+      .collection<User>(this.collectionName)
+      .findOne({ email });
+    if (!user) return null;
+    return {
+      id: user._id.toString(),
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+  }
+
   async save(newUser: CreateUserRequestModel): Promise<Partial<User> | null> {
     const newDocument = {
       username: newUser.username,

@@ -10,14 +10,17 @@ import {
 import { routeAdapter } from "@utils/routeAdapter";
 import { FindUserController } from "@modules/user/controllers/FindUserController";
 import { ListUsersController } from "@modules/user/controllers/ListUsersController";
+import { FindUserByEmailController } from "@modules/user/controllers/FindUserByEmailController";
 import { MongoUserRepository } from "@src/infra/mongo/repositories/user/MongoUserRepository";
 import { CreateUserUseCase } from "@modules/user/useCases/CreateUserUseCase";
 import { FindUserByIdUseCase } from "@modules/user/useCases/FindUserByIdUseCase";
+import { FindUserByEmailUseCase } from "@modules/user/useCases/FindUserByEmailUseCase";
 import { ListUsersPaginatedUseCase } from "@modules/user/useCases/ListUsersPaginatedUseCase";
 import { DeleteUserController } from "./controllers/DeleteUserController";
 import { DeleteUserByIdUseCase } from "./useCases/DeleteUserByIdUseCase";
 import { UpdateUserEmailController } from "./controllers/UpdateUserEmailController";
 import { UpdateUserEmailUseCase } from "./useCases/UpdateUserEmailUseCase";
+import { findUserByEmailSchema } from "./schemas/findUserByEmailSchema";
 
 const userRoutes = (app: FastifyTypedInstance) => {
   app.post(
@@ -26,6 +29,17 @@ const userRoutes = (app: FastifyTypedInstance) => {
     routeAdapter(
       new CreateUserController({
         createUserUseCase: new CreateUserUseCase({
+          userRepository: new MongoUserRepository(),
+        }),
+      }),
+    ),
+  );
+  app.post(
+    "/email",
+    findUserByEmailSchema,
+    routeAdapter(
+      new FindUserByEmailController({
+        findUserByEmailUseCase: new FindUserByEmailUseCase({
           userRepository: new MongoUserRepository(),
         }),
       }),
