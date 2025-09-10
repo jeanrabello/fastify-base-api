@@ -25,7 +25,9 @@ interface I{ModuleName}{Action}Controller {
 
 export class {Action}{ModuleName}Controller extends AbstractController<
   I{ModuleName}Translation,
-  {RequestModel}
+  {RequestModel},
+  {ParamsModel},
+  {QueryModel}
 > {
   private {actionName}UseCase: {Action}{ModuleName}UseCase;
 
@@ -35,7 +37,7 @@ export class {Action}{ModuleName}Controller extends AbstractController<
   }
 
   async handle(
-    request: HttpRequest<{RequestModel}, I{ModuleName}Translation>,
+    request: HttpRequest<{RequestModel}, {ParamsModel}, {QueryModel}, I{ModuleName}Translation>,
   ): Promise<HttpResponse<I{ModuleName}Translation>> {
     // Extract data from request
     const data = request.body as {RequestModel};
@@ -63,9 +65,18 @@ export class {Action}{ModuleName}Controller extends AbstractController<
 
 ### 2. Generic Types
 
-- Controllers are generic over translation interface and request model
-- Translation interface provides type safety for error messages
-- Request model ensures type safety for incoming data
+Controllers extend AbstractController with 4 generic types:
+
+```typescript
+AbstractController<ITranslation, TBody, TParams, TQuery>;
+```
+
+- **ITranslation**: Translation interface for type-safe error messages
+- **TBody**: Request body model for type safety of incoming data
+- **TParams**: URL parameters model (e.g., `{ id: string }`)
+- **TQuery**: Query parameters model (e.g., `{ page: number, size: number }`)
+
+Use `undefined` for types not needed in specific controllers.
 
 ### 3. Error Handling
 
@@ -112,7 +123,12 @@ export class CreateUserController extends AbstractController<
   }
 
   async handle(
-    request: HttpRequest<CreateUserRequestModel, IUserTranslation>,
+    request: HttpRequest<
+      CreateUserRequestModel,
+      undefined,
+      undefined,
+      IUserTranslation
+    >,
   ): Promise<HttpResponse<IUserTranslation>> {
     const newUser = request.body as CreateUserRequestModel;
     const user = await this.createUserUseCase.execute(newUser);

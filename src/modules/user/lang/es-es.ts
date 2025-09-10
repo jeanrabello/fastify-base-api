@@ -9,6 +9,10 @@ const esEs: IUserTranslation = {
       tokenNotFound: "Token no encontrado",
       internalServerError: "Error interno del servidor",
       noMessageSpecified: "No se especificó ningún mensaje",
+      invalidToken: "Token inválido",
+      authorizationRequired: "Autorización requerida",
+      invalidAuthorizationFormat: "Formato de autorización inválido",
+      accessForbidden: "Acceso prohibido",
     },
   },
   user: {
@@ -16,6 +20,7 @@ const esEs: IUserTranslation = {
       created: "¡Usuario creado exitosamente!",
       error: "Error al crear usuario",
       emailAlreadyRegistered: "Correo electrónico ya registrado",
+      usernameAlreadyRegistered: "Nombre de usuario ya registrado",
     },
     findUser: {
       notFound: "Usuario no encontrado",

@@ -1,12 +1,11 @@
 import { FindUserByEmailUseCase } from "@modules/user/useCases/FindUserByEmailUseCase";
 import { User } from "@src/shared/entities/user.entity";
 import CustomError from "@src/shared/classes/CustomError";
+import { IUserRepository } from "@modules/user/types/IUserRepository";
 
 describe("FindUserByEmailUseCase", () => {
   let useCase: FindUserByEmailUseCase;
-  let userRepository: jest.Mocked<{
-    findByEmailWithPassword: jest.Mock;
-  }>;
+  let userRepository: jest.Mocked<IUserRepository>;
 
   const mockUser: User = {
     id: "1",
@@ -20,12 +19,12 @@ describe("FindUserByEmailUseCase", () => {
   beforeEach(() => {
     userRepository = {
       findByEmailWithPassword: jest.fn(),
-    };
+    } as unknown as jest.Mocked<IUserRepository>;
     useCase = new FindUserByEmailUseCase({ userRepository } as any);
   });
 
   describe("Successful execution", () => {
-    it("should return user when found", async () => {
+    it("Should return user when found", async () => {
       userRepository.findByEmailWithPassword.mockResolvedValue(mockUser);
       const result = await useCase.execute(mockUser.email);
       expect(userRepository.findByEmailWithPassword).toHaveBeenCalledWith(
@@ -35,7 +34,7 @@ describe("FindUserByEmailUseCase", () => {
       expect(result).toEqual(mockUser);
     });
 
-    it("should return null when user not found", async () => {
+    it("Should return null when user not found", async () => {
       userRepository.findByEmailWithPassword.mockResolvedValue(null);
       const email = "notfound@example.com";
       const result = await useCase.execute(email);
@@ -48,28 +47,28 @@ describe("FindUserByEmailUseCase", () => {
   });
 
   describe("Input validation", () => {
-    it("should throw error when email is null", async () => {
+    it("Should throw error when email is null", async () => {
       await expect(useCase.execute(null as any)).rejects.toEqual(
         new CustomError("shared.error.invalidFields", 400),
       );
       expect(userRepository.findByEmailWithPassword).not.toHaveBeenCalled();
     });
 
-    it("should throw error when email is undefined", async () => {
+    it("Should throw error when email is undefined", async () => {
       await expect(useCase.execute(undefined as any)).rejects.toEqual(
         new CustomError("shared.error.invalidFields", 400),
       );
       expect(userRepository.findByEmailWithPassword).not.toHaveBeenCalled();
     });
 
-    it("should throw error when email is empty string", async () => {
+    it("Should throw error when email is empty string", async () => {
       await expect(useCase.execute("")).rejects.toEqual(
         new CustomError("shared.error.invalidFields", 400),
       );
       expect(userRepository.findByEmailWithPassword).not.toHaveBeenCalled();
     });
 
-    it("should throw error when email is whitespace-only", async () => {
+    it("Should throw error when email is whitespace-only", async () => {
       await expect(useCase.execute("   ")).rejects.toEqual(
         new CustomError("shared.error.invalidFields", 400),
       );
@@ -78,7 +77,7 @@ describe("FindUserByEmailUseCase", () => {
   });
 
   describe("Repository interaction", () => {
-    it("should call repository with correct parameters", async () => {
+    it("Should call repository with correct parameters", async () => {
       userRepository.findByEmailWithPassword.mockResolvedValue(null);
       const email = "valid@email.com";
       await useCase.execute(email);
@@ -88,7 +87,7 @@ describe("FindUserByEmailUseCase", () => {
       expect(userRepository.findByEmailWithPassword).toHaveBeenCalledTimes(1);
     });
 
-    it("should handle repository errors gracefully", async () => {
+    it("Should handle repository errors gracefully", async () => {
       const repositoryError = new Error("Database connection failed");
       userRepository.findByEmailWithPassword.mockRejectedValue(repositoryError);
       const email = "valid@email.com";

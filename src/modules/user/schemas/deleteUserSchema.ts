@@ -4,6 +4,7 @@ const deleteUserSchema = {
   schema: {
     tags: ["Users"],
     description: "Delete user by id",
+    security: [{ bearerAuth: [] }],
     headers: z.object({
       "accept-language": z.string().optional().default("en-US"),
     }),
@@ -26,6 +27,12 @@ const deleteUserSchema = {
             .default("Error deleting user"),
         })
         .describe("Error deleting user"),
+      401: z
+        .object({
+          statusCode: z.number().default(401),
+          message: z.string(),
+        })
+        .describe("Authentication required"),
       404: z
         .object({
           statusCode: z.number().default(404),

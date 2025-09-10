@@ -9,6 +9,10 @@ const enUs: IUserTranslation = {
       tokenNotFound: "Token not found",
       internalServerError: "Internal server error",
       noMessageSpecified: "No message specified",
+      invalidToken: "Invalid token",
+      authorizationRequired: "Authorization required",
+      invalidAuthorizationFormat: "Invalid authorization format",
+      accessForbidden: "Access forbidden",
     },
   },
   user: {
@@ -16,6 +20,7 @@ const enUs: IUserTranslation = {
       created: "User created successfully!",
       error: "Error creating user",
       emailAlreadyRegistered: "Email already registered",
+      usernameAlreadyRegistered: "Username already registered",
     },
     findUser: {
       notFound: "User not found",

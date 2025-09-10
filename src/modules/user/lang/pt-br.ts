@@ -9,6 +9,10 @@ const ptBr: IUserTranslation = {
       tokenNotFound: "Token não encontrado",
       internalServerError: "Erro interno do servidor",
       noMessageSpecified: "Mensagem não especificada",
+      invalidToken: "Token inválido",
+      authorizationRequired: "Autorização necessária",
+      invalidAuthorizationFormat: "Formato de autorização inválido",
+      accessForbidden: "Acesso proibido",
     },
   },
   user: {
@@ -16,6 +20,7 @@ const ptBr: IUserTranslation = {
       created: "Usuário criado com sucesso!",
       error: "Erro ao criar usuário",
       emailAlreadyRegistered: "E-mail já cadastrado",
+      usernameAlreadyRegistered: "Nome de usuário já cadastrado",
     },
     findUser: {
       notFound: "Usuário não encontrado",

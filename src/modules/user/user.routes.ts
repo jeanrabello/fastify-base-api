@@ -47,7 +47,10 @@ const userRoutes = (app: FastifyTypedInstance) => {
   );
   app.get(
     "/",
-    listUsersSchema,
+    {
+      ...listUsersSchema,
+      preHandler: app.authenticate,
+    },
     routeAdapter(
       new ListUsersController({
         listUsersUseCase: new ListUsersPaginatedUseCase({
@@ -59,7 +62,10 @@ const userRoutes = (app: FastifyTypedInstance) => {
 
   app.get(
     "/:id",
-    findUserSchema,
+    {
+      ...findUserSchema,
+      preHandler: app.authenticate,
+    },
     routeAdapter(
       new FindUserController({
         findUserByIdUseCase: new FindUserByIdUseCase({
@@ -70,7 +76,10 @@ const userRoutes = (app: FastifyTypedInstance) => {
   );
   app.delete(
     "/:id",
-    deleteUserSchema,
+    {
+      ...deleteUserSchema,
+      preHandler: app.authenticate,
+    },
     routeAdapter(
       new DeleteUserController({
         findUserByIdUseCase: new FindUserByIdUseCase({
@@ -84,7 +93,10 @@ const userRoutes = (app: FastifyTypedInstance) => {
   );
   app.put(
     "/:id",
-    updateUserEmailSchema,
+    {
+      ...updateUserEmailSchema,
+      preHandler: app.authenticate,
+    },
     routeAdapter(
       new UpdateUserEmailController({
         updateUserEmailUseCase: new UpdateUserEmailUseCase({

@@ -36,7 +36,11 @@ export class DeleteUserController extends AbstractController<
         message: "user.deleteUser.notFound",
       };
     }
-    const isDeleted = await this.deleteUserByIdUseCase.execute(userRequestId);
+    const currentUserId = request.user?.id;
+    const isDeleted = await this.deleteUserByIdUseCase.execute(
+      userRequestId,
+      currentUserId,
+    );
     return {
       statusCode: isDeleted ? 200 : 400,
       message: `user.deleteUser.${isDeleted ? "deleted" : "error"}`,

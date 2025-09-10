@@ -21,9 +21,10 @@ This document provides a comprehensive overview of the Fastify-based API archite
 ┌─────────────────────────────────────────────────────────────┐
 │                     Business Layer                          │
 ├─────────────────────────────────────────────────────────────┤
-│  Use Cases → Entities → Business Logic                      │
+│  Use Cases → Services → Entities → Business Logic           │
 │  • Domain business rules                                    │
 │  • Use case orchestration                                   │
+│  • External integrations (via Services)                     │
 │  • Business validation                                      │
 │  • Error handling with translations                         │
 └─────────────────────────────────────────────────────────────┘
@@ -32,7 +33,7 @@ This document provides a comprehensive overview of the Fastify-based API archite
 ┌─────────────────────────────────────────────────────────────┐
 │                     Data Access Layer                       │
 ├─────────────────────────────────────────────────────────────┤
-│  Repositories → Database → External Services                │
+│  Repositories → Database → External APIs                    │
 │  • Data persistence and retrieval                           │
 │  • Database abstraction                                     │
 │  • External API integration                                 │
@@ -53,6 +54,7 @@ src/modules/{moduleName}/
 ├── {moduleName}.routes.ts      # Route definitions and DI
 ├── controllers/                # HTTP handlers
 ├── useCases/                  # Business logic
+├── services/                  # External integrations & utilities
 ├── models/                    # Data transfer objects
 ├── schemas/                   # Validation and OpenAPI
 ├── types/                     # Interfaces and type definitions
@@ -126,9 +128,45 @@ export class {Action}{ModuleName}UseCase implements IUseCase {
 - Business rule enforcement
 - Input validation
 - Repository coordination
+- Service coordination (external integrations)
 - Error handling with CustomError
 
-### 4. Repositories (Data Access)
+### 4. Services (External Integrations & Utilities)
+
+**Purpose**: Provide specialized functionality that doesn't fit into the repository pattern, such as external integrations and cross-cutting concerns.
+
+**Pattern**:
+
+```typescript
+export class {ServiceName}Service implements I{ServiceName}Service {
+  constructor() {
+    // Initialize configuration, API clients, etc.
+  }
+
+  async {methodName}(input: {InputType}): Promise<{OutputType}> {
+    // Service implementation
+  }
+}
+```
+
+**Responsibilities**:
+
+- Authentication and JWT token management
+- External API integrations
+- Encryption and security utilities
+- Email and notification services
+- File processing and storage
+- Business utilities that don't belong in repositories
+
+**Common Service Types**:
+
+- **AuthService**: JWT token generation and validation
+- **UserService**: External user API integration
+- **EmailService**: Email sending and templating
+- **FileService**: File upload and processing
+- **EncryptionService**: Data encryption and hashing
+
+### 5. Repositories (Data Access)
 
 **Purpose**: Abstract data persistence and provide clean interfaces for data operations.
 
@@ -152,7 +190,7 @@ export class Mongo{ModuleName}Repository
 - Data mapping between layers
 - Query optimization
 
-### 5. Models (Data Transfer Objects)
+### 6. Models (Data Transfer Objects)
 
 **Purpose**: Define structure for data flowing between layers.
 
@@ -179,7 +217,7 @@ export interface {ModuleName}ResponseModel extends IModel {
 }
 ```
 
-### 6. Schemas (Validation & Documentation)
+### 7. Schemas (Validation & Documentation)
 
 **Purpose**: Define validation rules and OpenAPI documentation.
 
@@ -210,7 +248,7 @@ const {action}{ModuleName}Schema = {
 - OpenAPI documentation generation
 - Type safety for requests/responses
 
-### 7. Translations (Internationalization)
+### 8. Translations (Internationalization)
 
 **Purpose**: Provide type-safe, multi-language support for all user-facing messages.
 
@@ -235,7 +273,7 @@ export interface I{ModuleName}Translation extends Translation {
 - Hierarchical message organization
 - Automatic language detection
 
-### 8. Error Handling (Consistency)
+### 9. Error Handling (Consistency)
 
 **Purpose**: Provide consistent, translatable error handling across the application.
 
@@ -267,24 +305,26 @@ throw new CustomError<I{ModuleName}Translation>(
 2. Route Handler → Schema Validation
 3. Schema Validation → Controller
 4. Controller → Use Case
-5. Use Case → Repository
-6. Repository → Database
+5. Use Case → Services (external integrations)
+6. Use Case → Repositories (data access)
+7. Repository → Database
 ```
 
 ### Response Flow
 
 ```
 1. Database → Repository (data mapping)
-2. Repository → Use Case (business logic)
-3. Use Case → Controller (result)
-4. Controller → Response Translator (i18n)
-5. Response Translator → HTTP Response
+2. Services → Use Case (external data/operations)
+3. Repository → Use Case (business logic)
+4. Use Case → Controller (result)
+5. Controller → Response Translator (custom translation system)
+6. Response Translator → HTTP Response
 ```
 
 ### Error Flow
 
 ```
-1. Error occurs in any layer
+1. Error occurs in any layer (Repository, Service, Use Case)
 2. CustomError thrown with translation key
 3. Error Handler Middleware catches error
 4. Translation applied based on Accept-Language
@@ -326,38 +366,54 @@ export class Mongo{Module}Repository
 }
 ```
 
-4. **Create Models** (`src/modules/{module}/models/`)
+4. **Create Service Interfaces** (`src/modules/{module}/types/I{Service}Service.ts`)
+
+```typescript
+export interface I{Service}Service {
+  {methodName}(input: {InputType}): Promise<{OutputType}>;
+}
+```
+
+5. **Implement Services** (`src/modules/{module}/services/{Service}Service.ts`)
+
+```typescript
+export class {Service}Service implements I{Service}Service {
+  // External integrations, utilities, etc.
+}
+```
+
+6. **Create Models** (`src/modules/{module}/models/`)
 
 - Request models for input
 - Response models for output
 - Parameter models for URLs
 
-5. **Create Schemas** (`src/modules/{module}/schemas/`)
+7. **Create Schemas** (`src/modules/{module}/schemas/`)
 
 - Validation rules with Zod
 - OpenAPI documentation
 
-6. **Create Use Cases** (`src/modules/{module}/useCases/`)
+8. **Create Use Cases** (`src/modules/{module}/useCases/`)
 
 - Business logic implementation
-- Repository coordination
+- Repository and service coordination
 
-7. **Create Controllers** (`src/modules/{module}/controllers/`)
+9. **Create Controllers** (`src/modules/{module}/controllers/`)
 
 - HTTP request handling
 - Use case delegation
 
-8. **Create Translations** (`src/modules/{module}/lang/`)
+10. **Create Translations** (`src/modules/{module}/lang/`)
 
 - Translation interface
 - Language implementations
 
-9. **Create Routes** (`src/modules/{module}/{module}.routes.ts`)
+11. **Create Routes** (`src/modules/{module}/{module}.routes.ts`)
 
 - Route definitions
 - Dependency injection
 
-10. **Register Module** (`src/modules/routes.ts`)
+12. **Register Module** (`src/modules/routes.ts`)
 
 ```typescript
 app.register({module}Routes, { prefix: "/{module}" });
@@ -374,9 +430,11 @@ constructor(dependencies: ICreateUserController) {
   this.createUserUseCase = dependencies.createUserUseCase;
 }
 
-// Use Cases
-constructor({ userRepository }: ICreateUserUseCase) {
+// Use Cases with Services and Repositories
+constructor({ userRepository, authService, emailService }: ICreateUserUseCase) {
   this.userRepository = userRepository;
+  this.authService = authService;
+  this.emailService = emailService;
 }
 ```
 
@@ -390,6 +448,8 @@ app.post(
     new CreateUserController({
       createUserUseCase: new CreateUserUseCase({
         userRepository: new MongoUserRepository(),
+        authService: new JWTAuthService(),
+        emailService: new EmailService(),
       }),
     }),
   ),

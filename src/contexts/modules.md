@@ -21,6 +21,8 @@ src/modules/{moduleName}/
 │   ├── List{ModuleName}sPaginatedUseCase.ts
 │   ├── Update{ModuleName}UseCase.ts
 │   └── Delete{ModuleName}ByIdUseCase.ts
+├── services/                       # Module-specific services (optional)
+│   └── {ModuleName}SpecificService.ts
 ├── models/                         # Data transfer objects
 │   ├── Request/
 │   │   ├── Create{ModuleName}Request.model.ts
@@ -40,12 +42,15 @@ src/modules/{moduleName}/
 │   └── delete{ModuleName}Schema.ts
 ├── types/                          # Interfaces and type definitions
 │   ├── I{ModuleName}Repository.ts
-│   └── I{ModuleName}Translation.ts
+│   ├── I{ModuleName}Translation.ts
+│   └── I{ModuleName}Service.ts     # Module-specific service interfaces
 └── lang/                           # Internationalization
     ├── index.tsx
     ├── en-us.ts
     └── pt-br.ts
 ```
+
+**Note**: Currently, most services are implemented as shared services in `src/shared/services/` for cross-module reusability. Module-specific services should only be created when the functionality is truly specific to that domain.
 
 ## Module Routes Template
 
@@ -70,6 +75,10 @@ import { Delete{ModuleName}ByIdUseCase } from "@modules/{moduleName}/useCases/De
 // Repository
 import { Mongo{ModuleName}Repository } from "@src/infra/mongo/repositories/{moduleName}/Mongo{ModuleName}Repository";
 
+// Shared Services (when needed)
+import { JWTAuthService } from "@src/shared/services/JWTAuthService";
+import { UserService } from "@src/shared/services/UserService";
+
 // Schemas
 import {
   create{ModuleName}Schema,
@@ -80,6 +89,10 @@ import {
 } from "@modules/{moduleName}/schemas";
 
 const {moduleName}Routes = (app: FastifyTypedInstance) => {
+  // Initialize shared services (when needed by use cases)
+  const authService = new JWTAuthService();
+  const userService = new UserService();
+
   // Create
   app.post(
     "/",
@@ -88,6 +101,9 @@ const {moduleName}Routes = (app: FastifyTypedInstance) => {
       new Create{ModuleName}Controller({
         create{ModuleName}UseCase: new Create{ModuleName}UseCase({
           {moduleName}Repository: new Mongo{ModuleName}Repository(),
+          // Include services when needed by the use case
+          // authService,
+          // userService,
         }),
       }),
     ),
