@@ -69,7 +69,7 @@ export class UserService implements IUserService {
             id: data.user.id,
             username: data.user.username,
             email: data.user.email,
-            password: "", // Nunca retorna senha
+            password: "",
           };
         }
       }
