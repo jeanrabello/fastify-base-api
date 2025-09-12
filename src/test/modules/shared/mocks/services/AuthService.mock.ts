@@ -1,4 +1,4 @@
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 
 export const mockAuthService: jest.Mocked<IAuthService> = {
   generateToken: jest.fn(),

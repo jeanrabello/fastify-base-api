@@ -13,10 +13,11 @@ export class FindUserByEmailUseCase {
     this.userRepository = userRepository;
   }
 
-  async execute(email?: string): Promise<User | null> {
+  async execute(email?: string): Promise<Partial<User> | null> {
     if (!email || typeof email !== "string" || !email.trim()) {
       throw new CustomError("shared.error.invalidFields", 400);
     }
-    return this.userRepository.findByEmailWithPassword(email);
+
+    return this.userRepository.findByEmail(email);
   }
 }

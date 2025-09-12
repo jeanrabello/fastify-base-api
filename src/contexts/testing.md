@@ -154,7 +154,7 @@ Use cases should be tested by mocking repository and service dependencies.
 ```typescript
 import { {Action}{ModuleName}UseCase } from "@modules/{moduleName}/useCases/{Action}{ModuleName}UseCase";
 import { I{ModuleName}Repository } from "@modules/{moduleName}/types/I{ModuleName}Repository";
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 import CustomError from "@src/shared/classes/CustomError";
 
 describe("{Action}{ModuleName}UseCase", () => {
@@ -368,7 +368,7 @@ Create service mocks in `src/test/modules/{module}/mocks/services/`:
 
 ```typescript
 // AuthService.mock.ts
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 
 export const mockAuthService: jest.Mocked<IAuthService> = {
   generateToken: jest.fn().mockReturnValue("mock-access-token"),

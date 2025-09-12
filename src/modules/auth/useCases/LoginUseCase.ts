@@ -1,5 +1,5 @@
 import { LoginResponseModel } from "@modules/auth/models/Response/LoginResponse.model";
-import { IAuthService, IUserService } from "@modules/auth/types/IAuthService";
+import { IAuthService, IUserService } from "@src/shared/types/services";
 import CustomError from "@src/shared/classes/CustomError";
 import { IUseCase } from "@src/shared/classes/IUseCase";
 import { IAuthTranslation } from "../types/IAuthTranslation";
@@ -29,21 +29,9 @@ export class LoginUseCase implements IUseCase {
       throw new CustomError("shared.error.requiredFields", 400);
     }
 
-    const user = await this.userService.findUserByEmail(email);
+    const user = await this.userService.verifyUserCredentials(email, password);
 
     if (!user) {
-      throw new CustomError<IAuthTranslation>(
-        "auth.login.invalidCredentials",
-        401,
-      );
-    }
-
-    const isPasswordValid = await this.userService.verifyPassword(
-      password,
-      user.password,
-    );
-
-    if (!isPasswordValid) {
       throw new CustomError<IAuthTranslation>(
         "auth.login.invalidCredentials",
         401,

@@ -267,7 +267,7 @@ Create mock implementations:
 
 ```typescript
 // src/test/modules/shared/mocks/services/UserService.mock.ts
-import { IUserService } from "@modules/auth/types/IAuthService";
+import { IUserService } from "@src/shared/types/services";
 
 export const mockUserService: jest.Mocked<IUserService> = {
   findUserByEmail: jest.fn(),

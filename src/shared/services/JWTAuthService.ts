@@ -1,7 +1,7 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 import CustomError from "@src/shared/classes/CustomError";
 import config from "@config/api";
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 
 export class JWTAuthService implements IAuthService {
   generateToken(payload: any): string {

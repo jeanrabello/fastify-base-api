@@ -150,7 +150,7 @@ export class {ServiceName}Service implements I{ServiceName}Service {
 ```typescript
 // In src/shared/services/JWTAuthService.ts
 import jwt, { SignOptions } from "jsonwebtoken";
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 import CustomError from "@src/shared/classes/CustomError";
 import config from "@config/api";
 
@@ -210,7 +210,7 @@ export class JWTAuthService implements IAuthService {
 // In src/shared/services/UserService.ts
 import axios from "axios";
 import bcrypt from "bcrypt";
-import { IUserService } from "@modules/auth/types/IAuthService";
+import { IUserService } from "@src/shared/types/services";
 import config from "@config/api";
 import CustomError from "@src/shared/classes/CustomError";
 import { User } from "@src/shared/entities/user.entity";

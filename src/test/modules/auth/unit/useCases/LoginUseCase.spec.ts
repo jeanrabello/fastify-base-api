@@ -2,7 +2,7 @@ import { LoginUseCase } from "@modules/auth/useCases/LoginUseCase";
 import { LoginRequestModel } from "@modules/auth/models/Request/LoginRequest.model";
 import { mockUser, mockLoginResponse } from "../../mocks";
 import CustomError from "@src/shared/classes/CustomError";
-import { IAuthService, IUserService } from "@modules/auth/types/IAuthService";
+import { IAuthService, IUserService } from "@src/shared/types/services";
 import { IAuthTranslation } from "@modules/auth/types/IAuthTranslation";
 
 describe("LoginUseCase", () => {
@@ -22,6 +22,7 @@ describe("LoginUseCase", () => {
     userService = {
       findUserByEmail: jest.fn(),
       verifyPassword: jest.fn(),
+      verifyUserCredentials: jest.fn(),
     } as unknown as jest.Mocked<IUserService>;
 
     useCase = new LoginUseCase({ authService, userService });
@@ -34,8 +35,7 @@ describe("LoginUseCase", () => {
         password: "password123",
       };
 
-      userService.findUserByEmail.mockResolvedValue(mockUser);
-      userService.verifyPassword.mockResolvedValue(true);
+      userService.verifyUserCredentials.mockResolvedValue(mockUser);
       authService.generateToken.mockReturnValue(mockLoginResponse.accessToken);
       authService.generateRefreshToken.mockReturnValue(
         mockLoginResponse.refreshToken,
@@ -44,12 +44,9 @@ describe("LoginUseCase", () => {
 
       const result = await useCase.execute(loginRequest);
 
-      expect(userService.findUserByEmail).toHaveBeenCalledWith(
+      expect(userService.verifyUserCredentials).toHaveBeenCalledWith(
         loginRequest.email,
-      );
-      expect(userService.verifyPassword).toHaveBeenCalledWith(
         loginRequest.password,
-        mockUser.password,
       );
       expect(authService.generateToken).toHaveBeenCalledWith({
         id: mockUser.id,
@@ -90,7 +87,6 @@ describe("LoginUseCase", () => {
         email: "",
         password: "password123",
       };
-
       const expectedError = new CustomError("shared.error.requiredFields", 400);
 
       await expect(useCase.execute(loginRequest)).rejects.toThrow(
@@ -110,7 +106,7 @@ describe("LoginUseCase", () => {
       );
     });
 
-    it("Should throw CustomError when user is not found", async () => {
+    it("Should throw CustomError when user credentials are invalid", async () => {
       const loginRequest: LoginRequestModel = {
         email: "nonexistent@example.com",
         password: "password123",
@@ -121,33 +117,14 @@ describe("LoginUseCase", () => {
         401,
       );
 
-      userService.findUserByEmail.mockResolvedValue(null);
+      userService.verifyUserCredentials.mockResolvedValue(null);
 
       await expect(useCase.execute(loginRequest)).rejects.toThrow(
         expectedError,
       );
     });
 
-    it("Should throw CustomError when password is invalid", async () => {
-      const loginRequest: LoginRequestModel = {
-        email: mockUser.email,
-        password: "wrongpassword",
-      };
-
-      const expectedError = new CustomError<IAuthTranslation>(
-        "auth.login.invalidCredentials",
-        401,
-      );
-
-      userService.findUserByEmail.mockResolvedValue(mockUser);
-      userService.verifyPassword.mockResolvedValue(false);
-
-      await expect(useCase.execute(loginRequest)).rejects.toThrow(
-        expectedError,
-      );
-    });
-
-    it("Should throw error when userService.findUserByEmail throws", async () => {
+    it("Should throw error when userService.verifyUserCredentials throws", async () => {
       const loginRequest: LoginRequestModel = {
         email: mockUser.email,
         password: "password123",
@@ -156,26 +133,7 @@ describe("LoginUseCase", () => {
         "shared.error.internalServerError",
         500,
       );
-      userService.findUserByEmail.mockRejectedValue(expectedError);
-
-      await expect(useCase.execute(loginRequest)).rejects.toThrow(
-        expectedError,
-      );
-    });
-
-    it("Should throw error when userService.verifyPassword throws", async () => {
-      const loginRequest: LoginRequestModel = {
-        email: mockUser.email,
-        password: "password123",
-      };
-
-      const expectedError = new CustomError<IAuthTranslation>(
-        "shared.error.internalServerError",
-        500,
-      );
-
-      userService.findUserByEmail.mockResolvedValue(mockUser);
-      userService.verifyPassword.mockRejectedValue(expectedError);
+      userService.verifyUserCredentials.mockRejectedValue(expectedError);
 
       await expect(useCase.execute(loginRequest)).rejects.toThrow(
         expectedError,

@@ -1,15 +1,16 @@
 import { z } from "@utils/index";
 
-const findUserByEmailSchema = {
+const verifyUserCredentialsSchema = {
   schema: {
     tags: ["Users"],
-    description: "Find user by email",
+    description: "Verify user credentials (email and password)",
     headers: z.object({
       "accept-language": z.string().optional().default("en-US"),
     }),
     body: z
       .object({
         email: z.string().email(),
+        password: z.string().min(1),
       })
       .required(),
     response: {
@@ -17,15 +18,18 @@ const findUserByEmailSchema = {
         .object({
           statusCode: z.number().default(200),
           message: z.string(),
-          data: z
-            .object({
-              id: z.string(),
-              username: z.string(),
-              email: z.string().email(),
-            })
-            .nullable(),
+          data: z.object({
+            isValid: z.boolean(),
+            user: z
+              .object({
+                id: z.string(),
+                username: z.string(),
+                email: z.string().email(),
+              })
+              .optional(),
+          }),
         })
-        .describe("User data"),
+        .describe("Credential verification result"),
       400: z
         .object({
           statusCode: z.number().default(400),
@@ -35,15 +39,6 @@ const findUserByEmailSchema = {
             .default("Required fields not filled"),
         })
         .describe("Required fields not filled"),
-      404: z
-        .object({
-          statusCode: z.number().default(404),
-          message: z
-            .string()
-            .describe("User not found")
-            .default("User not found"),
-        })
-        .describe("User not found"),
       500: z.object({
         statusCode: z.number().default(500),
         message: z
@@ -55,4 +50,4 @@ const findUserByEmailSchema = {
   },
 };
 
-export { findUserByEmailSchema };
+export { verifyUserCredentialsSchema };

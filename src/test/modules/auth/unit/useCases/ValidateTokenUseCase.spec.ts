@@ -1,7 +1,7 @@
 import { ValidateTokenUseCase } from "@modules/auth/useCases/ValidateTokenUseCase";
 import { mockTokenPayload } from "../../mocks";
 import CustomError from "@src/shared/classes/CustomError";
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 
 describe("ValidateTokenUseCase", () => {
   let useCase: ValidateTokenUseCase;

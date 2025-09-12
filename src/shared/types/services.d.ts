@@ -11,4 +11,5 @@ export interface IAuthService {
 export interface IUserService {
   findUserByEmail(email: string): Promise<User | null>;
   verifyPassword(password: string, hashedPassword: string): Promise<boolean>;
+  verifyUserCredentials(email: string, password: string): Promise<User | null>;
 }

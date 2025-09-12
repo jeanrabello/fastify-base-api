@@ -1,7 +1,7 @@
 import { RefreshTokenUseCase } from "@modules/auth/useCases/RefreshTokenUseCase";
 import { mockTokenPayload } from "../../mocks";
 import CustomError from "@src/shared/classes/CustomError";
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 
 describe("RefreshTokenUseCase", () => {
   let useCase: RefreshTokenUseCase;

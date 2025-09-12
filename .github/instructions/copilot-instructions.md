@@ -200,7 +200,7 @@ import { UserService } from "@src/shared/services/UserService";
 import { PaymentService } from "@modules/payment/services/PaymentService";
 
 // ✅ Service interfaces (always in module types)
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 ```
 
 **Remember**: Consistency is key. Follow existing patterns rather than creating new ones. Always read the relevant context documents before coding.

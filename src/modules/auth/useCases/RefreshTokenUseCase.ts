@@ -1,5 +1,5 @@
 import { RefreshTokenResponseModel } from "@modules/auth/models/Response/RefreshTokenResponse.model";
-import { IAuthService } from "@modules/auth/types/IAuthService";
+import { IAuthService } from "@src/shared/types/services";
 import CustomError from "@src/shared/classes/CustomError";
 import { IUseCase } from "@src/shared/classes/IUseCase";
 import { IAuthTranslation } from "../types/IAuthTranslation";
