@@ -59,6 +59,12 @@ const getConfig = (): Config => {
       pass: process.env.EMAIL_PASS || "",
       service: process.env.EMAIL_SERVICE || "gmail",
     },
+    rateLimit: {
+      enabled: true,
+      max: Number(process.env.RATE_LIMIT_MAX) || 10,
+      timeWindow: Number(process.env.RATE_LIMIT_TIME_WINDOW) || 60 * 1000,
+      disableLimitSecret: process.env.RATE_LIMIT_DISABLE_SECRET || "secret-key",
+    },
   };
 
   return config;
@@ -105,6 +111,12 @@ export interface Config {
     pass: string;
     service: string;
   };
+  rateLimit: {
+    enabled: boolean;
+    max: number;
+    timeWindow: number;
+    disableLimitSecret: string;
+  };
 }
 ```
 
@@ -140,7 +152,7 @@ These have sensible defaults but can be customized:
 ```bash
 # Application
 APP_NAME="YourAPIName"
-APP_HOST="0.0.0.0"
+APP_HOST="127.0.0.1"
 
 # Security
 BCRYPT_SALT_ROUNDS="12"
@@ -149,6 +161,11 @@ BCRYPT_SALT_ROUNDS="12"
 EMAIL_USER="your-email@gmail.com"
 EMAIL_PASS="your-app-password"
 EMAIL_SERVICE="gmail"
+
+# Rate Limiting
+RATE_LIMIT_MAX=100
+RATE_LIMIT_TIME_WINDOW=60000
+RATE_LIMIT_DISABLE_SECRET=secret-key
 ```
 
 ## Environment Files
@@ -217,7 +234,7 @@ BCRYPT_SALT_ROUNDS=4
 NODE_ENV=production
 APP_NAME=FastifyAPI
 APP_PORT=3000
-APP_HOST=0.0.0.0
+APP_HOST="127.0.0.1"
 BASE_URL=https://api.yourdomain.com
 
 # Database (production)

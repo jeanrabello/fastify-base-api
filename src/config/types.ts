@@ -31,4 +31,10 @@ export interface Config {
     refreshTokenSecret: string;
     refreshTokenExpiresIn: string;
   };
+  rateLimit: {
+    enabled: boolean;
+    max: number;
+    timeWindow: number;
+    disableLimitSecret: string;
+  };
 }

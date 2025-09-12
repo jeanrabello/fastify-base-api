@@ -13,6 +13,7 @@ const itIt: IUserTranslation = {
       authorizationRequired: "Autorizzazione richiesta",
       invalidAuthorizationFormat: "Formato di autorizzazione non valido",
       accessForbidden: "Accesso vietato",
+      tooManyRequests: "Troppe richieste, attendere un momento per favore",
     },
   },
   user: {

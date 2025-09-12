@@ -56,10 +56,18 @@ export class UserService implements IUserService {
     password: string,
   ): Promise<User | null> {
     try {
-      const response = await axios.post(`${this.userServiceUrl}/auth/verify`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${this.userServiceUrl}/auth/verify`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "x-app-client-id": config.rateLimit.disableLimitSecret,
+          },
+        },
+      );
 
       if (response.status === 200) {
         const data: VerifyCredentialsResponse = response.data.data;

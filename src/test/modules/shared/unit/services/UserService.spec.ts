@@ -3,7 +3,10 @@ jest.mock("axios");
 jest.mock("bcrypt");
 jest.mock("@config/api", () => ({
   __esModule: true,
-  default: { app: { url: "http://localhost:3000/api" } },
+  default: {
+    app: { url: "http://localhost:3000/api" },
+    rateLimit: { disableLimitSecret: "test-secret" },
+  },
 }));
 
 import axios from "axios";
@@ -211,6 +214,11 @@ describe("UserService", () => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         `${config.app.url}/user/auth/verify`,
         { email, password },
+        {
+          headers: {
+            "x-app-client-id": config.rateLimit.disableLimitSecret,
+          },
+        },
       );
       expect(result).toEqual({
         id: mockUser.id,
@@ -239,6 +247,11 @@ describe("UserService", () => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         `${config.app.url}/user/auth/verify`,
         { email, password },
+        {
+          headers: {
+            "x-app-client-id": config.rateLimit.disableLimitSecret,
+          },
+        },
       );
       expect(result).toBeNull();
     });
@@ -256,6 +269,11 @@ describe("UserService", () => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         `${config.app.url}/user/auth/verify`,
         { email, password },
+        {
+          headers: {
+            "x-app-client-id": config.rateLimit.disableLimitSecret,
+          },
+        },
       );
       expect(result).toBeNull();
     });
@@ -362,6 +380,11 @@ describe("UserService", () => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         `${config.app.url}/user/auth/verify`,
         { email, password },
+        {
+          headers: {
+            "x-app-client-id": config.rateLimit.disableLimitSecret,
+          },
+        },
       );
     });
   });

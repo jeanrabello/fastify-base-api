@@ -25,6 +25,14 @@ export default async function errorHandler(app: FastifyInstance) {
         .send(JSON.stringify({ message: error.message }));
     }
 
+    // Rate limit error handling
+    if (error.statusCode === 429) {
+      return reply
+        .status(429)
+        .type("application/json")
+        .send(JSON.stringify({ message: "shared.error.tooManyRequests" }));
+    }
+
     return reply
       .status(500)
       .type("application/json")

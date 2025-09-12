@@ -20,20 +20,26 @@ const getConfig = (): Config => {
       user: process.env.MONGO_INITDB_ROOT_USERNAME || "root",
       password: process.env.MONGO_INITDB_ROOT_PASSWORD || "root",
     },
-    nodemailer: {
-      user: process.env.EMAIL_USER || "",
-      pass: process.env.EMAIL_PASS || "",
-      service: process.env.EMAIL_SERVICE || "gmail",
-    },
-    security: {
-      bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) || 12,
-    },
     jwt: {
       tokenSecret: process.env.JWT_SECRET || "default-token-secret",
       tokenExpiresIn: process.env.JWT_EXPIRES_IN || "15m",
       refreshTokenSecret:
         process.env.JWT_REFRESH_SECRET || "default-refresh-token-secret",
       refreshTokenExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
+    },
+    security: {
+      bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) || 12,
+    },
+    nodemailer: {
+      user: process.env.EMAIL_USER || "",
+      pass: process.env.EMAIL_PASS || "",
+      service: process.env.EMAIL_SERVICE || "gmail",
+    },
+    rateLimit: {
+      enabled: true, // environment === "production",
+      max: Number(process.env.RATE_LIMIT_MAX) || 10,
+      timeWindow: Number(process.env.RATE_LIMIT_TIME_WINDOW) || 60 * 1000,
+      disableLimitSecret: process.env.RATE_LIMIT_DISABLE_SECRET || "secret-key", // Internal use only
     },
   };
 

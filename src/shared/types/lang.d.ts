@@ -11,6 +11,7 @@ export interface Translation {
       authorizationRequired: string;
       invalidAuthorizationFormat: string;
       accessForbidden: string;
+      tooManyRequests: string;
     };
   };
 }

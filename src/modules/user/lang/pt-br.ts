@@ -13,6 +13,7 @@ const ptBr: IUserTranslation = {
       authorizationRequired: "Autorização necessária",
       invalidAuthorizationFormat: "Formato de autorização inválido",
       accessForbidden: "Acesso proibido",
+      tooManyRequests: "Muitas requisições, aguarde um momento por favor",
     },
   },
   user: {
