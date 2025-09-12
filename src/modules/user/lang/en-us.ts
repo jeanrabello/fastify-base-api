@@ -13,6 +13,7 @@ const enUs: IUserTranslation = {
       authorizationRequired: "Authorization required",
       invalidAuthorizationFormat: "Invalid authorization format",
       accessForbidden: "Access forbidden",
+      tooManyRequests: "Too many requests, please wait a moment",
     },
   },
   user: {

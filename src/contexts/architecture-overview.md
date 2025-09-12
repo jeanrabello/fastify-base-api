@@ -8,6 +8,17 @@ This document provides a comprehensive overview of the Fastify-based API archite
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
+│                   Cross-cutting Layer                       │
+├─────────────────────────────────────────────────────────────┤
+│  Plugins → Rate Limiting → CORS → Security → Logging        │
+│  • Application-wide functionality                           │
+│  • Request/response preprocessing                           │
+│  • Security and throttling                                  │
+│  • Monitoring and observability                             │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
 │                     Presentation Layer                      │
 ├─────────────────────────────────────────────────────────────┤
 │  Controllers → Schemas → Routes → Middleware                │
@@ -248,7 +259,33 @@ const {action}{ModuleName}Schema = {
 - OpenAPI documentation generation
 - Type safety for requests/responses
 
-### 8. Translations (Internationalization)
+### 8. Plugins (Cross-cutting Concerns)
+
+**Purpose**: Implement application-wide functionality that affects all or most endpoints.
+
+**Pattern**:
+
+```typescript
+export async function {pluginName}Plugin(app: FastifyInstance) {
+  if (!config.{pluginName}.enabled) {
+    return;
+  }
+
+  app.register(externalPlugin, {
+    // Configuration from config.{pluginName}
+  });
+}
+```
+
+**Responsibilities**:
+
+- Rate limiting and throttling
+- Request/response logging
+- Authentication middleware
+- Request validation preprocessing
+- Security headers
+
+### 9. Translations (Internationalization)
 
 **Purpose**: Provide type-safe, multi-language support for all user-facing messages.
 
@@ -273,7 +310,7 @@ export interface I{ModuleName}Translation extends Translation {
 - Hierarchical message organization
 - Automatic language detection
 
-### 9. Error Handling (Consistency)
+### 10. Error Handling (Consistency)
 
 **Purpose**: Provide consistent, translatable error handling across the application.
 
@@ -419,6 +456,34 @@ export class {Service}Service implements I{Service}Service {
 app.register({module}Routes, { prefix: "/{module}" });
 ```
 
+### Creating a New Plugin
+
+1. **Create Plugin File** (`src/plugins/{pluginName}.ts`)
+
+```typescript
+import { FastifyInstance } from "fastify";
+import config from "@config/api";
+
+export async function {pluginName}Plugin(app: FastifyInstance) {
+  if (!config.{pluginName}.enabled) {
+    return;
+  }
+
+  // Plugin implementation
+  app.register(externalPlugin, {
+    // Configuration options
+  });
+
+  console.log("{PluginName} plugin enabled");
+}
+```
+
+2. **Add Configuration** (`src/config/api.ts` & `src/config/types.ts`)
+
+- Add plugin settings to configuration interface
+- Include environment variable support
+- Set sensible defaults
+
 ## Dependency Injection Pattern
 
 ### Constructor Injection
@@ -525,6 +590,14 @@ interface CreateUserRequestModel {
 - Exclude sensitive fields from responses
 - Hash passwords and tokens
 - Encrypt PII data at rest
+
+### Rate Limiting & API Protection
+
+- Configurable request limits per time window
+- IP-based and header-based client identification
+- Bypass mechanisms for internal requests
+- Integration with configuration system
+- Automatic HTTP 429 responses with rate limit headers
 
 ### Error Handling
 

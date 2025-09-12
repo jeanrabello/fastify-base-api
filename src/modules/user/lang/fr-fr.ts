@@ -13,6 +13,8 @@ const frFr: IUserTranslation = {
       authorizationRequired: "Autorisation requise",
       invalidAuthorizationFormat: "Format d'autorisation invalide",
       accessForbidden: "Accès refusé",
+      tooManyRequests:
+        "Trop de requêtes, veuillez patienter un moment s'il vous plaît",
     },
   },
   user: {

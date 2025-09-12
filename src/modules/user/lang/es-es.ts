@@ -13,6 +13,7 @@ const esEs: IUserTranslation = {
       authorizationRequired: "Autorización requerida",
       invalidAuthorizationFormat: "Formato de autorización inválido",
       accessForbidden: "Acceso prohibido",
+      tooManyRequests: "Demasiadas solicitudes, espere un momento por favor",
     },
   },
   user: {
