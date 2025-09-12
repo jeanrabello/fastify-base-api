@@ -22,10 +22,22 @@ export class CreateUserUseCase implements IUseCase {
       throw new CustomError("shared.error.requiredFields", 400);
     }
 
-    const exists = await this.userRepository.findByEmail(input.email);
-    if (exists) {
+    const existingUserByEmail = await this.userRepository.findByEmail(
+      input.email,
+    );
+    if (existingUserByEmail) {
       throw new CustomError<IUserTranslation>(
         "user.createUser.emailAlreadyRegistered",
+        409,
+      );
+    }
+
+    const existingUserByUsername = await this.userRepository.findByUsername(
+      input.username,
+    );
+    if (existingUserByUsername) {
+      throw new CustomError<IUserTranslation>(
+        "user.createUser.usernameAlreadyRegistered",
         409,
       );
     }

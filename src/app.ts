@@ -1,6 +1,7 @@
 import config from "@config/api";
 import { fastifyCors } from "@fastify/cors";
 import translationMiddleware from "@middlewares/translation";
+import authMiddleware from "@middlewares/auth";
 import { routes } from "@modules/routes";
 import { swaggerPlugin } from "@plugins/index";
 import { fastify } from "fastify";
@@ -24,6 +25,7 @@ app.register(fastifyCors, {
 
 swaggerPlugin(app);
 translationMiddleware(app);
+authMiddleware(app);
 responseTranslator(app);
 errorHandler(app);
 
@@ -34,7 +36,6 @@ const startServer = async () => {
     await initializeLoaders();
 
     const appConfig = { port: config.app.port, host: config.app.host };
-
     const address = await app.listen(appConfig);
     console.log(`Server listening at ${address}`);
   } catch (err) {

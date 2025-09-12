@@ -6,6 +6,7 @@ export interface IUserTranslation extends Translation {
       created: string;
       error: string;
       emailAlreadyRegistered: string;
+      usernameAlreadyRegistered: string;
     };
     findUser: {
       notFound: string;

@@ -7,6 +7,10 @@ export interface Translation {
       tokenNotFound: string;
       internalServerError: string;
       noMessageSpecified: string;
+      invalidToken: string;
+      authorizationRequired: string;
+      invalidAuthorizationFormat: string;
+      accessForbidden: string;
     };
   };
 }

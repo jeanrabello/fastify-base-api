@@ -13,9 +13,14 @@ export class DeleteUserByIdUseCase implements IUseCase {
     this.userRepository = userRepository;
   }
 
-  async execute(id: string): Promise<boolean> {
+  async execute(id: string, currentUserId?: string): Promise<boolean> {
     if (!id) {
       throw new CustomError("shared.error.requiredFields", 400);
+    }
+
+    // Authorization: only the owner can delete their account
+    if (currentUserId && currentUserId !== id) {
+      throw new CustomError("shared.error.accessForbidden", 403);
     }
 
     return !!(await this.userRepository.delete(id));

@@ -32,9 +32,12 @@ export class UpdateUserEmailController extends AbstractController<
   ): Promise<HttpResponse<IUserTranslation, UpdateUserEmailResponseModel>> {
     const userId = request.params?.id || "";
     const email = request.body?.email;
+    const currentUserId = request.user?.id;
+
     const updatedUser = await this.updateUserEmailUseCase.execute({
       userId,
       email,
+      currentUserId,
     });
     return {
       statusCode: 200,

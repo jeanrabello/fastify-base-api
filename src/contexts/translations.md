@@ -2,7 +2,7 @@
 
 ## Overview
 
-The translation system provides internationalization (i18n) support for API responses, error messages, and user-facing content. It uses a type-safe approach with TypeScript interfaces to ensure translation keys are validated at compile time.
+The translation system provides custom internationalization support for API responses, error messages, and user-facing content. It uses a type-safe approach with TypeScript interfaces to ensure translation keys are validated at compile time.
 
 ## Architecture Pattern
 
@@ -488,7 +488,7 @@ Test translation functionality:
 
 ```typescript
 describe("Translation System", () => {
-  it("should return English message for en-US locale", () => {
+  it("Should return English message for en-US locale", () => {
     const request = {
       headers: { "accept-language": "en-US" },
       // ... other request properties
@@ -497,7 +497,7 @@ describe("Translation System", () => {
     // Test that the correct translation is returned
   });
 
-  it("should fallback to English for unsupported locale", () => {
+  it("Should fallback to English for unsupported locale", () => {
     const request = {
       headers: { "accept-language": "fr-FR" },
       // ... other request properties

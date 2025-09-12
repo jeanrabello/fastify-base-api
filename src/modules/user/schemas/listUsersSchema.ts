@@ -4,6 +4,7 @@ export const listUsersSchema = {
   schema: {
     tags: ["Users"],
     description: "List users with pagination",
+    security: [{ bearerAuth: [] }],
     querystring: z.object({
       page: z
         .string()
@@ -35,6 +36,12 @@ export const listUsersSchema = {
           ),
         }),
       }),
+      401: z
+        .object({
+          statusCode: z.number().default(401),
+          message: z.string(),
+        })
+        .describe("Authentication required"),
     },
   },
 };

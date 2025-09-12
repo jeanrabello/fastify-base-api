@@ -18,12 +18,19 @@ export class UpdateUserEmailUseCase implements IUseCase {
   async execute({
     userId,
     email,
+    currentUserId,
   }: Partial<{
     userId: string;
     email: string;
+    currentUserId: string;
   }>): Promise<UpdateUserEmailResponseModel> {
     if (!userId || !email) {
       throw new CustomError("shared.error.requiredFields", 400);
+    }
+
+    // Authorization: only the owner can update their email
+    if (currentUserId && currentUserId !== userId) {
+      throw new CustomError("shared.error.accessForbidden", 403);
     }
 
     const userFoundById = await this.userRepository.findById(userId);

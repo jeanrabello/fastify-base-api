@@ -18,7 +18,7 @@ const translationMiddleware = async (app: FastifyInstance) => {
     }
 
     if (acceptLanguage) {
-      const lang = acceptLanguage.split(",")[0].trim();
+      const lang = acceptLanguage.split(",")[0].trim().toLowerCase();
       const availableLangs = fs
         .readdirSync(path.join(__dirname, `../../modules/${domain}/lang`))
         .map((file) => path.parse(file).name)

@@ -150,9 +150,33 @@ const {action}{ModuleName}Schema = {
 
 ---
 
-### 7. **translations.md**
+### 7. **services.md**
 
-**Purpose**: Guide for implementing type-safe internationalization (i18n) support.
+**Purpose**: Guide for implementing specialized functionality that doesn't fit into the repository pattern, such as external integrations and cross-cutting concerns.
+
+**Key Topics**:
+
+- Service categories (Authentication, External APIs, Utilities)
+- Interface-based design patterns
+- Dependency injection into use cases
+- Configuration and error handling
+- Testing and mocking strategies
+
+**Template Example**:
+
+```typescript
+export class {ServiceName}Service implements I{ServiceName}Service {
+  async {methodName}(input: {InputType}): Promise<{OutputType}>
+}
+```
+
+**When to Use**: Implementing authentication logic, external API integrations, encryption services, or any complex operations that don't belong in repositories.
+
+---
+
+### 8. **translations.md**
+
+**Purpose**: Guide for implementing type-safe custom translation system.
 
 **Key Topics**:
 
@@ -175,11 +199,11 @@ export interface I{ModuleName}Translation extends Translation {
 }
 ```
 
-**When to Use**: Adding new modules with i18n support, creating error messages, implementing multi-language features.
+**When to Use**: Adding new modules with custom translation support, creating error messages, implementing multi-language features.
 
 ---
 
-### 8. **entities.md**
+### 9. **entities.md**
 
 **Purpose**: Guide for defining domain entities that represent core business objects.
 
@@ -206,7 +230,7 @@ export interface {EntityName} {
 
 ---
 
-### 9. **error-handling.md**
+### 10. **error-handling.md**
 
 **Purpose**: Guide for implementing consistent, translatable error handling across the application.
 
@@ -250,6 +274,7 @@ src/modules/{moduleName}/
 ├── {moduleName}.routes.ts
 ├── controllers/
 ├── useCases/
+├── services/
 ├── models/
 ├── schemas/
 ├── types/
@@ -270,16 +295,18 @@ src/modules/{moduleName}/
 4. **Create data contracts**: `models.md` - Define DTOs
 5. **Add validation**: `schemas.md` - Create validation rules
 6. **Implement data access**: `repositories.md` - Create repositories
-7. **Add business logic**: `useCases.md` - Implement use cases
-8. **Create HTTP layer**: `controllers.md` - Handle requests
-9. **Add i18n support**: `translations.md` - Implement translations
-10. **Handle errors**: `error-handling.md` - Add error handling
+7. **Add services**: `services.md` - Implement external integrations and utilities
+8. **Add business logic**: `useCases.md` - Implement use cases
+9. **Create HTTP layer**: `controllers.md` - Handle requests
+10. **Add translation support**: `translations.md` - Implement translations
+11. **Handle errors**: `error-handling.md` - Add error handling
 
 ### For Understanding Existing Code:
 
 - **HTTP layer**: `controllers.md` + `schemas.md`
 - **Business layer**: `useCases.md` + `entities.md`
 - **Data layer**: `repositories.md` + `models.md`
+- **Service layer**: `services.md` - External integrations & utilities
 - **Cross-cutting**: `translations.md` + `error-handling.md`
 
 ### For Debugging Issues:
@@ -287,6 +314,7 @@ src/modules/{moduleName}/
 - **Validation errors**: `schemas.md`
 - **Business logic errors**: `useCases.md` + `error-handling.md`
 - **Data access issues**: `repositories.md`
+- **Service integration issues**: `services.md`
 - **Translation problems**: `translations.md`
 
 ## Key Principles Across All Contexts
@@ -323,7 +351,7 @@ src/modules/{moduleName}/
 
 ### 6. **Internationalization**
 
-- All user-facing messages support i18n
+- All user-facing messages support custom translation system
 - Use type-safe translation keys
 - Organize messages hierarchically
 

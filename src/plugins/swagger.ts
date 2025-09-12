@@ -18,6 +18,16 @@ async function swaggerPlugin(app: FastifyInstance) {
         title: "Typed API",
         version: "1.0.0",
       },
+      // Validar a procedência disso aqui
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+          },
+        },
+      },
     },
     transform: jsonSchemaTransform,
   });

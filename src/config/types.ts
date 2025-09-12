@@ -6,6 +6,7 @@ export interface Config {
     port: number;
     env: Environment;
     host: string;
+    url: string;
   };
   swagger: {
     enabled: boolean;
@@ -23,5 +24,11 @@ export interface Config {
   };
   security: {
     bcryptSaltRounds: number;
+  };
+  jwt: {
+    tokenSecret: string;
+    tokenExpiresIn: string;
+    refreshTokenSecret: string;
+    refreshTokenExpiresIn: string;
   };
 }

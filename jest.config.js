@@ -18,4 +18,5 @@ module.exports = {
   },
   moduleFileExtensions: ["ts", "js", "json", "node"],
   testMatch: ["**/__tests__/**/*.(ts|tsx|js)", "**/*.(test|spec).(ts|tsx|js)"],
+  maxWorkers: 1,
 };

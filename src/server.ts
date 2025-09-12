@@ -1,3 +1,4 @@
+import "@src/config/env";
 import app from "./app";
 
 app.ready().then(() => {

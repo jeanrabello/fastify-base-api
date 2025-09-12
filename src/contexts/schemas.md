@@ -605,7 +605,7 @@ src/modules/{moduleName}/schemas/
 
 ```typescript
 // Test valid input
-it("should accept valid create user data", () => {
+it("Should accept valid create user data", () => {
   const validData = {
     username: "testuser",
     email: "test@example.com",
@@ -617,7 +617,7 @@ it("should accept valid create user data", () => {
 });
 
 // Test invalid input
-it("should reject invalid email", () => {
+it("Should reject invalid email", () => {
   const invalidData = {
     username: "testuser",
     email: "invalid-email",

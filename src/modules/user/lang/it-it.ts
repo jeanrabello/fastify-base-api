@@ -9,6 +9,10 @@ const itIt: IUserTranslation = {
       tokenNotFound: "Token non trovato",
       internalServerError: "Errore interno del server",
       noMessageSpecified: "Nessun messaggio specificato",
+      invalidToken: "Token non valido",
+      authorizationRequired: "Autorizzazione richiesta",
+      invalidAuthorizationFormat: "Formato di autorizzazione non valido",
+      accessForbidden: "Accesso vietato",
     },
   },
   user: {
@@ -16,6 +20,7 @@ const itIt: IUserTranslation = {
       created: "Utente creato con successo!",
       error: "Errore durante la creazione dell'utente",
       emailAlreadyRegistered: "Email già registrata",
+      usernameAlreadyRegistered: "Nome utente già registrato",
     },
     findUser: {
       notFound: "Utente non trovato",

@@ -63,6 +63,22 @@ export class MongoUserRepository
     return result;
   }
 
+  async findByUsername(username: string): Promise<Partial<User> | null> {
+    const user = await this.db
+      .collection<User>(this.collectionName)
+      .findOne({ username });
+    if (!user) return null;
+    const result: Partial<User> = {
+      id: user._id.toString(),
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
+    return result;
+  }
+
   async delete(id: string): Promise<boolean> {
     const result = await this.db
       .collection<User>(this.collectionName)
@@ -120,5 +136,20 @@ export class MongoUserRepository
       email: updatedUser.email,
     };
     return result;
+  }
+
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    const user = await this.db
+      .collection<User>(this.collectionName)
+      .findOne({ email });
+    if (!user) return null;
+    return {
+      id: user._id.toString(),
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 }
