@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { getTranslationMessageFromPath } from "@utils/getTranslationMessageFromPath";
+import logger from "@src/observability/logger";
 
 export default async function responseTranslator(app: FastifyInstance) {
   app.addHook(
@@ -28,8 +29,11 @@ export default async function responseTranslator(app: FastifyInstance) {
           return done(null, JSON.stringify(newBody));
         }
       } catch (err) {
-        // Log the error to aid debugging of response translation issues
-        console.error("Error during response translation:", err);
+        logger.error({ 
+          err, 
+          url: request.url, 
+          method: request.method 
+        }, "Error during response translation");
       }
       done(null, payload);
     },

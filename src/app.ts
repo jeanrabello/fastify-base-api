@@ -13,6 +13,8 @@ import {
 import { initializeLoaders } from "./loaders/index";
 import responseTranslator from "@middlewares/responseTranslator";
 import errorHandler from "@middlewares/errorHandler";
+import { createMetricsMiddleware } from "./observability/metrics";
+import logger from "./observability/logger";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -24,6 +26,7 @@ app.register(fastifyCors, {
 });
 
 swaggerPlugin(app);
+createMetricsMiddleware(app);
 translationMiddleware(app);
 authMiddleware(app);
 responseTranslator(app);
@@ -37,10 +40,9 @@ const startServer = async () => {
 
     const appConfig = { port: config.app.port, host: config.app.host };
     const address = await app.listen(appConfig);
-    console.log(`Server listening at ${address}`);
+    logger.info({ address, port: config.app.port, host: config.app.host }, "Server listening");
   } catch (err) {
-    app.log.error(err);
-    console.error("Failed to start application:", err);
+    logger.error({ err }, "Failed to start application");
     process.exit(1);
   }
 };
