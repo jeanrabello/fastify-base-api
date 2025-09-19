@@ -2,17 +2,52 @@ services:
   mongodb:
     image: mongo
     container_name: mongodb
-    restart: always
     env_file:
       - ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-}
+      - MONGO_INITDB_DATABASE=${MONGO_DB_NAME:-fastifyAPI}
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
-      - fastifi_api_network
-
+      - fastify_api_network
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    image: fastify-base-api-dev
+    container_name: fastify-base-api-dev
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=development
+      - APP_PORT=${APP_PORT:-3000}
+      - APP_HOST=${APP_HOST:-0.0.0.0}
+      - BASE_URL=${BASE_URL:-http://0.0.0.0:3000/api}
+      - MONGO_DB_NAME=${MONGO_DB_NAME:-fastifyAPI}
+      - MONGO_URI=${MONGO_URI:-mongodb://mongodb:27017/fastifyAPI}
+    ports:
+      - "${APP_PORT:-3000}:${APP_PORT:-3000}"
+      - "9229:9229"
+    depends_on:
+      - mongodb
+    networks:
+      - fastify_api_network
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./package.json
+          target: /app/package.json
 volumes:
   mongodb_data:
 networks:
-  fastifi_api_network:
+  fastify_api_network:

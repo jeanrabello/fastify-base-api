@@ -19,6 +19,7 @@ const getConfig = (): Config => {
       dbName: process.env.MONGO_DB_NAME || "fastifyAPI",
       user: process.env.MONGO_INITDB_ROOT_USERNAME || "root",
       password: process.env.MONGO_INITDB_ROOT_PASSWORD || "root",
+      host: process.env.MONGO_HOST || "127.0.0.1",
     },
     nodemailer: {
       user: process.env.EMAIL_USER || "",

@@ -16,6 +16,7 @@ export interface Config {
     dbName: string;
     user: string;
     password: string;
+    host: string;
   };
   nodemailer: {
     user: string;
