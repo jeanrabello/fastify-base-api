@@ -1,5 +1,5 @@
 # Base stage - common parts
-FROM node:alpine AS base
+FROM node:22-alpine AS base
 
 WORKDIR /app
 
@@ -21,14 +21,27 @@ EXPOSE 3000
 # Command for development (with hot reload)
 CMD ["npm", "run", "dev"]
 
-# Production stage
-FROM base AS production
+# Build stage - installs dev dependencies and compiles TypeScript
+FROM base AS build
 
-# Install only production dependencies
+# Install all dependencies (including dev) for build
+RUN npm ci
+
+# Copy source code and build
+COPY . .
+RUN npm run build
+
+# Production stage - only production deps + compiled output
+FROM node:22-alpine AS production
+
+WORKDIR /app
+
+# Copy package files and install only production dependencies
+COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# Copy source code
-COPY . .
+# Copy compiled output from build stage
+COPY --from=build /app/dist ./dist
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs
