@@ -129,6 +129,7 @@ describe("API Configuration", () => {
         MONGO_DB_NAME: "customDB",
         MONGO_INITDB_ROOT_USERNAME: "customUser",
         MONGO_INITDB_ROOT_PASSWORD: "customPass",
+        MONGO_HOST: "custom-host",
       });
 
       expect(config.db).toEqual({
@@ -136,6 +137,7 @@ describe("API Configuration", () => {
         dbName: "customDB",
         user: "customUser",
         password: "customPass",
+        host: "custom-host",
       });
     });
 
