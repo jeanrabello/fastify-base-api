@@ -3,7 +3,7 @@ import { fastifyCors } from "@fastify/cors";
 import translationMiddleware from "@middlewares/translation";
 import authMiddleware from "@middlewares/auth";
 import { routes } from "@modules/routes";
-import { swaggerPlugin } from "@plugins/index";
+import { rateLimitPlugin, swaggerPlugin } from "@plugins/index";
 import { fastify } from "fastify";
 import {
   serializerCompiler,
@@ -24,6 +24,7 @@ app.register(fastifyCors, {
 });
 
 swaggerPlugin(app);
+rateLimitPlugin(app);
 translationMiddleware(app);
 authMiddleware(app);
 responseTranslator(app);

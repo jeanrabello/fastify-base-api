@@ -109,7 +109,7 @@ describe("API Configuration", () => {
       const config = getConfigWithEnv({
         APP_NAME: "Custom API",
         APP_PORT: "8080",
-        APP_HOST: "0.0.0.0",
+        APP_HOST: "127.0.0.1",
         BASE_URL: "https://api.example.com",
         NODE_ENV: "production",
       });
@@ -118,7 +118,7 @@ describe("API Configuration", () => {
         name: "Custom API",
         port: 8080,
         env: "production",
-        host: "0.0.0.0",
+        host: "127.0.0.1",
         url: "https://api.example.com",
       });
     });

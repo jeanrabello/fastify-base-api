@@ -13,6 +13,7 @@ const ptBr: IAuthTranslation = {
       authorizationRequired: "Autorização obrigatória",
       invalidAuthorizationFormat: "Formato de autorização inválido",
       accessForbidden: "Acesso proibido",
+      tooManyRequests: "Muitas requisições, aguarde um momento por favor",
     },
   },
   auth: {
