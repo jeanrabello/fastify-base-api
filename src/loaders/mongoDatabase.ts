@@ -9,7 +9,7 @@ const connectToMongoDatabase = async () => {
   // If 'uri' is provided, it takes precedence and other connection parameters (user, password, host) are ignored.
   const connectionUri =
     uri ||
-    `mongodb://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${encodeURIComponent(host)}:27017/${encodeURIComponent(dbName)}?authSource=admin`;
+    `mongodb://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${encodeURIComponent(host)}:27017/?authSource=admin`;
 
   const client = new MongoClient(connectionUri);
   await client.connect();
