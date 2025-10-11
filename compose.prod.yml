@@ -20,3 +20,5 @@ services:
       - "${APP_PORT:-3000}:3000"
     security_opt:
       - no-new-privileges:true
+networks:
+  fastify_api_prod_network:
