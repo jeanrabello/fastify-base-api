@@ -1,0 +1,22 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: fastify-base-api
+    container_name: fastify-base-api
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=production
+      - APP_PORT=${APP_PORT:-3000}
+      - APP_HOST=${APP_HOST:-0.0.0.0}
+      - BASE_URL=${BASE_URL}
+      - MONGO_DB_NAME=${MONGO_DB_NAME}
+      - MONGO_URI=${MONGO_URI}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    security_opt:
+      - no-new-privileges:true

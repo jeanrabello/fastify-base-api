@@ -14,6 +14,7 @@ const mockTranslation: Translation = {
       invalidAuthorizationFormat: "Invalid authorization format",
       invalidToken: "Invalid token",
       accessForbidden: "Access forbidden",
+      tooManyRequests: "Too many requests",
     },
   },
 };
