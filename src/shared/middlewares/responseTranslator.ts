@@ -16,6 +16,9 @@ export default async function responseTranslator(app: FastifyInstance) {
         }
         if (body && typeof body === "object" && "message" in body) {
           const languagePack = request.languagePack;
+          if (!languagePack) {
+            return done(null, payload);
+          }
           const message = getTranslationMessageFromPath(
             languagePack,
             body.message || null,

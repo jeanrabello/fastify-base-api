@@ -5,7 +5,8 @@ import { pathToFileURL } from "url";
 
 const translationMiddleware = async (app: FastifyInstance) => {
   app.addHook("onRequest", async (request, reply) => {
-    const domain = request.url.split("/")[2];
+    const urlPath = request.url.split("?")[0];
+    const domain = urlPath.split("/")[2];
     const acceptLanguage = request.headers["accept-language"] || "en-us";
     let langPackCode = "en-us";
 
