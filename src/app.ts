@@ -4,6 +4,7 @@ import translationMiddleware from "@middlewares/translation";
 import authMiddleware from "@middlewares/auth";
 import { routes } from "@modules/routes";
 import { rateLimitPlugin, swaggerPlugin } from "@plugins/index";
+import { hateoasPlugin } from "@plugins/hateoas";
 import { fastify } from "fastify";
 import {
   serializerCompiler,
@@ -28,6 +29,15 @@ rateLimitPlugin(app);
 translationMiddleware(app);
 authMiddleware(app);
 responseTranslator(app);
+app.register(hateoasPlugin, {
+  baseUrl: config.app.url,
+  prefix: "/api",
+  pagination: {
+    pageParam: "page",
+    sizeParam: "size",
+  },
+  exclude: ["/api/docs"],
+});
 errorHandler(app);
 
 app.register(routes, { prefix: "/api" });

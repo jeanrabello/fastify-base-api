@@ -7,8 +7,16 @@ import {
   RawServerDefault,
 } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
+import {
+  LinkGeneratorContext,
+  RouteHateoasConfig,
+} from "@plugins/hateoas/types";
 
 declare module "fastify" {
+  interface FastifyRequest {
+    hateoasContext: LinkGeneratorContext;
+  }
+
   interface FastifyInstance {
     authenticate: (
       request: FastifyRequest,
@@ -18,6 +26,10 @@ declare module "fastify" {
       request: FastifyRequest,
       reply: FastifyReply,
     ) => Promise<void>;
+  }
+
+  interface FastifyContextConfig {
+    hateoas?: RouteHateoasConfig;
   }
 }
 

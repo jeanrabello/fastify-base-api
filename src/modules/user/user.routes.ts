@@ -39,7 +39,9 @@ const userRoutes = (app: FastifyTypedInstance) => {
   );
   app.post(
     "/email",
-    findUserByEmailSchema,
+    {
+      ...findUserByEmailSchema,
+    },
     routeAdapter(
       new FindUserByEmailController({
         findUserByEmailUseCase: new FindUserByEmailUseCase({
@@ -64,6 +66,18 @@ const userRoutes = (app: FastifyTypedInstance) => {
     {
       ...listUsersSchema,
       preHandler: app.authenticate,
+      config: {
+        hateoas: {
+          collection: true,
+          pagination: true,
+          links: [{ rel: "create", method: "POST", path: "/api/user" }],
+          itemLinks: (user: { id: string }) => [
+            { rel: "self", method: "GET", path: `/api/user/${user.id}` },
+            { rel: "update", method: "PUT", path: `/api/user/${user.id}` },
+            { rel: "delete", method: "DELETE", path: `/api/user/${user.id}` },
+          ],
+        },
+      },
     },
     routeAdapter(
       new ListUsersController({
@@ -79,6 +93,15 @@ const userRoutes = (app: FastifyTypedInstance) => {
     {
       ...findUserSchema,
       preHandler: app.authenticate,
+      config: {
+        hateoas: {
+          links: [
+            { rel: "collection", method: "GET", path: "/api/user" },
+            { rel: "update", method: "PUT", path: "/api/user/:id" },
+            { rel: "delete", method: "DELETE", path: "/api/user/:id" },
+          ],
+        },
+      },
     },
     routeAdapter(
       new FindUserController({
