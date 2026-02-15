@@ -1,7 +1,10 @@
 import { createOnSendHook } from "@plugins/hateoas/hooks/onSend";
 import { createOnRequestHook } from "@plugins/hateoas/hooks/onRequest";
 import type { ResolvedHateoasOptions } from "@plugins/hateoas/plugin";
-import { defaultItemsExtractor, defaultPaginationExtractor } from "@plugins/hateoas";
+import {
+  defaultItemsExtractor,
+  defaultPaginationExtractor,
+} from "@plugins/hateoas";
 import { FastifyRequest, FastifyReply } from "fastify";
 
 describe("hooks", () => {
@@ -140,7 +143,8 @@ describe("hooks", () => {
 
     it("should set hateoasContext with function baseUrl", async () => {
       const hook = createOnRequestHook({
-        baseUrl: (req) => `https://${(req.headers as any)?.host || "default.com"}`,
+        baseUrl: (req) =>
+          `https://${(req.headers as any)?.host || "default.com"}`,
       });
       const request = {
         url: "/api/test",

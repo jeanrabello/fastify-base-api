@@ -304,9 +304,7 @@ describe("fastify-hateoas Plugin Integration", () => {
 
     const body = JSON.parse(response.body);
 
-    expect(body._links.self.href).toBe(
-      "https://custom.example.com/api/user",
-    );
+    expect(body._links.self.href).toBe("https://custom.example.com/api/user");
 
     await funcApp.close();
   });
@@ -420,7 +418,11 @@ describe("fastify-hateoas Plugin Integration", () => {
           hateoas: {
             collection: true,
             itemLinks: (item: { id: string }) => [
-              { rel: "self", method: "GET", path: `/api/data-items/${item.id}` },
+              {
+                rel: "self",
+                method: "GET",
+                path: `/api/data-items/${item.id}`,
+              },
             ],
           },
         },
@@ -454,7 +456,11 @@ describe("fastify-hateoas Plugin Integration", () => {
           hateoas: {
             collection: true,
             itemLinks: (item: { id: string }) => [
-              { rel: "self", method: "GET", path: `/api/data-results/${item.id}` },
+              {
+                rel: "self",
+                method: "GET",
+                path: `/api/data-results/${item.id}`,
+              },
             ],
           },
         },
@@ -488,7 +494,11 @@ describe("fastify-hateoas Plugin Integration", () => {
           hateoas: {
             collection: true,
             itemLinks: (item: { id: string }) => [
-              { rel: "self", method: "GET", path: `/api/data-array/${item.id}` },
+              {
+                rel: "self",
+                method: "GET",
+                path: `/api/data-array/${item.id}`,
+              },
             ],
           },
         },
@@ -520,7 +530,11 @@ describe("fastify-hateoas Plugin Integration", () => {
           hateoas: {
             collection: true,
             itemLinks: (item: { id: string }) => [
-              { rel: "self", method: "GET", path: `/api/root-items/${item.id}` },
+              {
+                rel: "self",
+                method: "GET",
+                path: `/api/root-items/${item.id}`,
+              },
             ],
           },
         },
@@ -552,7 +566,11 @@ describe("fastify-hateoas Plugin Integration", () => {
           hateoas: {
             collection: true,
             itemLinks: (item: { id: string }) => [
-              { rel: "self", method: "GET", path: `/api/root-results/${item.id}` },
+              {
+                rel: "self",
+                method: "GET",
+                path: `/api/root-results/${item.id}`,
+              },
             ],
           },
         },
@@ -584,7 +602,11 @@ describe("fastify-hateoas Plugin Integration", () => {
           hateoas: {
             collection: true,
             itemLinks: (item: { id: string }) => [
-              { rel: "self", method: "GET", path: `/api/root-records/${item.id}` },
+              {
+                rel: "self",
+                method: "GET",
+                path: `/api/root-records/${item.id}`,
+              },
             ],
           },
         },

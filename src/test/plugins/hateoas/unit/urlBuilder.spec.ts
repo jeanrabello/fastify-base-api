@@ -68,11 +68,10 @@ describe("urlBuilder", () => {
 
   describe("buildUrlWithQuery", () => {
     it("should build URL with query params", () => {
-      const result = buildUrlWithQuery(
-        "https://api.example.com",
-        "/api/user",
-        { page: 1, size: 10 },
-      );
+      const result = buildUrlWithQuery("https://api.example.com", "/api/user", {
+        page: 1,
+        size: 10,
+      });
 
       expect(result).toContain("page=1");
       expect(result).toContain("size=10");
@@ -91,9 +90,9 @@ describe("urlBuilder", () => {
 
   describe("extractPathFromUrl", () => {
     it("should extract path from URL", () => {
-      expect(extractPathFromUrl("https://api.example.com/api/user?page=1")).toBe(
-        "/api/user",
-      );
+      expect(
+        extractPathFromUrl("https://api.example.com/api/user?page=1"),
+      ).toBe("/api/user");
     });
 
     it("should extract path from relative URL", () => {
