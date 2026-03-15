@@ -15,6 +15,12 @@ export const mockUser = {
   updatedAt: new Date(),
 };
 
+export const mockSignupResponse = {
+  id: mockUser.id,
+  username: mockUser.username,
+  email: mockUser.email,
+};
+
 export const mockLoginResponse = {
   accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.token",
   refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.refresh",

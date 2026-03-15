@@ -12,7 +12,6 @@ import { FindUserController } from "@modules/user/controllers/FindUserController
 import { ListUsersController } from "@modules/user/controllers/ListUsersController";
 import { FindUserByEmailController } from "@modules/user/controllers/FindUserByEmailController";
 import { MongoUserRepository } from "@src/infra/mongo/repositories/user/MongoUserRepository";
-import { MongoCredentialRepository } from "@src/infra/mongo/repositories/credential/MongoCredentialRepository";
 import { CreateUserUseCase } from "@modules/user/useCases/CreateUserUseCase";
 import { FindUserByIdUseCase } from "@modules/user/useCases/FindUserByIdUseCase";
 import { FindUserByEmailUseCase } from "@modules/user/useCases/FindUserByEmailUseCase";
@@ -26,12 +25,14 @@ import { findUserByEmailSchema } from "./schemas/findUserByEmailSchema";
 const userRoutes = (app: FastifyTypedInstance) => {
   app.post(
     "/",
-    createUserSchema,
+    {
+      ...createUserSchema,
+      preHandler: app.authenticate,
+    },
     routeAdapter(
       new CreateUserController({
         createUserUseCase: new CreateUserUseCase({
           userRepository: new MongoUserRepository(),
-          credentialRepository: new MongoCredentialRepository(),
         }),
       }),
     ),

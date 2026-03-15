@@ -7,21 +7,10 @@ import {
 } from "../../mocks/models";
 import CustomError from "@src/shared/classes/CustomError";
 import { CreateUserRequestModel } from "@modules/user/models/Request/CreateUserRequest.model";
-import { hashPassword } from "@src/shared/utils";
-import { ICredentialRepository } from "@modules/auth/types/ICredentialRepository";
-
-jest.mock("@src/shared/utils", () => ({
-  ...jest.requireActual("@src/shared/utils"),
-  hashPassword: jest.fn(),
-}));
 
 describe("CreateUserUseCase", () => {
   let useCase: CreateUserUseCase;
   let userRepository: jest.Mocked<IUserRepository>;
-  let credentialRepository: jest.Mocked<ICredentialRepository>;
-  const mockHashPassword = hashPassword as jest.MockedFunction<
-    typeof hashPassword
-  >;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -36,14 +25,7 @@ describe("CreateUserUseCase", () => {
       updateUserEmail: jest.fn(),
     } as unknown as jest.Mocked<IUserRepository>;
 
-    credentialRepository = {
-      save: jest.fn(),
-      findByEmail: jest.fn(),
-      updateEmail: jest.fn(),
-      deleteByUserId: jest.fn(),
-    } as jest.Mocked<ICredentialRepository>;
-
-    useCase = new CreateUserUseCase({ userRepository, credentialRepository });
+    useCase = new CreateUserUseCase({ userRepository });
   });
 
   it("Should return new user object", async () => {
@@ -52,18 +34,10 @@ describe("CreateUserUseCase", () => {
       username: validCreateUserModel.username,
       email: validCreateUserModel.email,
     };
-    const hashedPassword = "hashedPassword123";
 
     userRepository.findByEmail.mockResolvedValue(null);
     userRepository.findByUsername.mockResolvedValue(null);
     userRepository.save.mockResolvedValue(createdUser);
-    credentialRepository.save.mockResolvedValue({
-      id: "credentialId",
-      userId: "mockedId",
-      email: validCreateUserModel.email,
-      secretData: hashedPassword,
-    });
-    mockHashPassword.mockResolvedValue(hashedPassword);
 
     const result = await useCase.execute(validCreateUserModel);
 
@@ -76,14 +50,6 @@ describe("CreateUserUseCase", () => {
     expect(userRepository.save).toHaveBeenCalledWith({
       username: validCreateUserModel.username,
       email: validCreateUserModel.email,
-    });
-    expect(mockHashPassword).toHaveBeenCalledWith(
-      validCreateUserModel.password,
-    );
-    expect(credentialRepository.save).toHaveBeenCalledWith({
-      userId: "mockedId",
-      email: validCreateUserModel.email,
-      secretData: hashedPassword,
     });
     expect(result).toEqual(createdUser);
   });

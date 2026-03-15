@@ -17,6 +17,12 @@ const ptBr: IAuthTranslation = {
     },
   },
   auth: {
+    signup: {
+      success: "Usuário registrado com sucesso",
+      emailAlreadyRegistered: "Email já registrado",
+      usernameAlreadyRegistered: "Nome de usuário já registrado",
+      error: "Erro ao registrar usuário",
+    },
     login: {
       success: "Login realizado com sucesso",
       invalidCredentials: "Credenciais inválidas",
