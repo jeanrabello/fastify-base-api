@@ -17,6 +17,12 @@ const enUs: IAuthTranslation = {
     },
   },
   auth: {
+    signup: {
+      success: "User registered successfully",
+      emailAlreadyRegistered: "Email already registered",
+      usernameAlreadyRegistered: "Username already registered",
+      error: "Error registering user",
+    },
     login: {
       success: "Login successful",
       invalidCredentials: "Invalid credentials",

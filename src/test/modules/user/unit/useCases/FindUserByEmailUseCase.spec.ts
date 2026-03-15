@@ -21,7 +21,6 @@ describe("FindUserByEmailUseCase", () => {
       findById: jest.fn(),
       findByEmail: jest.fn(),
       findByUsername: jest.fn(),
-      findByEmailWithPassword: jest.fn(),
       delete: jest.fn(),
       updateUserEmail: jest.fn(),
       findPaginated: jest.fn(),

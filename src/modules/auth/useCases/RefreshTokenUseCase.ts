@@ -27,7 +27,6 @@ export class RefreshTokenUseCase implements IUseCase {
       const payload = {
         id: decoded.id,
         email: decoded.email,
-        name: decoded.name,
       };
 
       const accessToken = this.authService.generateToken(payload);

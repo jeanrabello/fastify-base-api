@@ -23,11 +23,6 @@ const loginSchema = {
             accessToken: z.string(),
             refreshToken: z.string(),
             expiresIn: z.number(),
-            user: z.object({
-              id: z.string(),
-              email: z.string(),
-              name: z.string(),
-            }),
           }),
         })
         .describe("Login successful"),

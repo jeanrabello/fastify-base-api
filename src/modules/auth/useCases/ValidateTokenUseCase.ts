@@ -28,7 +28,6 @@ export class ValidateTokenUseCase implements IUseCase {
         user: {
           id: decoded.id,
           email: decoded.email,
-          name: decoded.name,
         },
       };
     } catch (error) {

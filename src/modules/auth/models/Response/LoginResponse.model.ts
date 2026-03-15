@@ -4,9 +4,4 @@ export interface LoginResponseModel extends IModel {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-  };
 }

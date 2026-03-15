@@ -22,7 +22,6 @@ const validateTokenSchema = {
               .object({
                 id: z.string(),
                 email: z.string(),
-                name: z.string(),
               })
               .optional(),
           }),

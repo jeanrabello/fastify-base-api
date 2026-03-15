@@ -42,7 +42,6 @@ export default async function authMiddleware(app: FastifyInstance) {
       request.user = {
         id: decodedToken.id,
         email: decodedToken.email,
-        name: decodedToken.name,
         iat: decodedToken.iat,
         exp: decodedToken.exp,
       };
@@ -79,7 +78,6 @@ export default async function authMiddleware(app: FastifyInstance) {
         request.user = {
           id: decodedToken.id,
           email: decodedToken.email,
-          name: decodedToken.name,
           iat: decodedToken.iat,
           exp: decodedToken.exp,
         };

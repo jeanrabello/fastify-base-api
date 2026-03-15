@@ -251,7 +251,6 @@ describe("FindUserController", () => {
         id: "test-user-id",
         username: "testusername",
         email: "test@email.com",
-        password: "hashedpassword", // This should not appear in response
         createdAt: new Date(),
         updatedAt: new Date(),
       };

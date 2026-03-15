@@ -3,7 +3,6 @@ import { IUserRepository } from "@modules/user/types/IUserRepository";
 import CustomError from "@src/shared/classes/CustomError";
 import { IUseCase } from "@src/shared/classes/IUseCase";
 import { User } from "@src/shared/entities/user.entity";
-import { hashPassword } from "@src/shared/utils";
 import { IUserTranslation } from "../types/IUserTranslation";
 
 interface ICreateUserUseCase {
@@ -18,7 +17,7 @@ export class CreateUserUseCase implements IUseCase {
   }
 
   async execute(input: CreateUserRequestModel): Promise<Partial<User>> {
-    if (!input || !input.email || !input.password || !input.username) {
+    if (!input || !input.email || !input.username) {
       throw new CustomError("shared.error.requiredFields", 400);
     }
 
@@ -42,15 +41,10 @@ export class CreateUserUseCase implements IUseCase {
       );
     }
 
-    const hashedPassword = await hashPassword(input.password);
-    const userDataWithHashedPassword = {
-      ...input,
-      password: hashedPassword,
-    };
-
-    const createdUser = await this.userRepository.save(
-      userDataWithHashedPassword,
-    );
+    const createdUser = await this.userRepository.save({
+      username: input.username,
+      email: input.email,
+    });
 
     if (!createdUser) {
       throw new CustomError<IUserTranslation>("user.createUser.error", 500);

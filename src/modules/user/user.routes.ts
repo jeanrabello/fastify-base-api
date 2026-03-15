@@ -11,24 +11,24 @@ import { routeAdapter } from "@utils/routeAdapter";
 import { FindUserController } from "@modules/user/controllers/FindUserController";
 import { ListUsersController } from "@modules/user/controllers/ListUsersController";
 import { FindUserByEmailController } from "@modules/user/controllers/FindUserByEmailController";
-import { VerifyUserCredentialsController } from "@modules/user/controllers/VerifyUserCredentialsController";
 import { MongoUserRepository } from "@src/infra/mongo/repositories/user/MongoUserRepository";
 import { CreateUserUseCase } from "@modules/user/useCases/CreateUserUseCase";
 import { FindUserByIdUseCase } from "@modules/user/useCases/FindUserByIdUseCase";
 import { FindUserByEmailUseCase } from "@modules/user/useCases/FindUserByEmailUseCase";
-import { VerifyUserCredentialsUseCase } from "@modules/user/useCases/VerifyUserCredentialsUseCase";
 import { ListUsersPaginatedUseCase } from "@modules/user/useCases/ListUsersPaginatedUseCase";
 import { DeleteUserController } from "./controllers/DeleteUserController";
 import { DeleteUserByIdUseCase } from "./useCases/DeleteUserByIdUseCase";
 import { UpdateUserEmailController } from "./controllers/UpdateUserEmailController";
 import { UpdateUserEmailUseCase } from "./useCases/UpdateUserEmailUseCase";
 import { findUserByEmailSchema } from "./schemas/findUserByEmailSchema";
-import { verifyUserCredentialsSchema } from "./schemas/verifyUserCredentialsSchema";
 
 const userRoutes = (app: FastifyTypedInstance) => {
   app.post(
     "/",
-    createUserSchema,
+    {
+      ...createUserSchema,
+      preHandler: app.authenticate,
+    },
     routeAdapter(
       new CreateUserController({
         createUserUseCase: new CreateUserUseCase({
@@ -43,17 +43,6 @@ const userRoutes = (app: FastifyTypedInstance) => {
     routeAdapter(
       new FindUserByEmailController({
         findUserByEmailUseCase: new FindUserByEmailUseCase({
-          userRepository: new MongoUserRepository(),
-        }),
-      }),
-    ),
-  );
-  app.post(
-    "/auth/verify",
-    verifyUserCredentialsSchema,
-    routeAdapter(
-      new VerifyUserCredentialsController({
-        verifyUserCredentialsUseCase: new VerifyUserCredentialsUseCase({
           userRepository: new MongoUserRepository(),
         }),
       }),

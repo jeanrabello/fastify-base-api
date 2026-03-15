@@ -2,6 +2,12 @@ import { Translation } from "@src/shared/types/lang";
 
 export interface IAuthTranslation extends Translation {
   auth: {
+    signup: {
+      success: string;
+      emailAlreadyRegistered: string;
+      usernameAlreadyRegistered: string;
+      error: string;
+    };
     login: {
       success: string;
       invalidCredentials: string;
