@@ -3,7 +3,6 @@ import {
   ICredentialRepository,
 } from "@modules/auth/types/ICredentialRepository";
 import { Credential } from "@src/shared/entities/credential.entity";
-import { ObjectId } from "mongodb";
 import { AbstractMongoRepository } from "../AbstractMongoRepository";
 
 export class MongoCredentialRepository
