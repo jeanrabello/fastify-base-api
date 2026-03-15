@@ -351,7 +351,6 @@ describe("UpdateUserEmailUseCase", () => {
         id: existingUser.id,
         username: existingUser.username,
         email: newEmail,
-        password: "hashedpassword", // Should not appear in response
         createdAt: new Date(),
         updatedAt: new Date(),
       };

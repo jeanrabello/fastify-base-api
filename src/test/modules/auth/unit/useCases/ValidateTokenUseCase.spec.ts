@@ -35,7 +35,6 @@ describe("ValidateTokenUseCase", () => {
         user: {
           id: mockTokenPayload.id,
           email: mockTokenPayload.email,
-          name: mockTokenPayload.name,
         },
       });
     });

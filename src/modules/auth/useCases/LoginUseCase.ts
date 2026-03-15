@@ -1,21 +1,23 @@
 import { LoginResponseModel } from "@modules/auth/models/Response/LoginResponse.model";
-import { IAuthService, IUserService } from "@src/shared/types/services";
+import { IAuthService } from "@src/shared/types/services";
+import { ICredentialRepository } from "@modules/auth/types/ICredentialRepository";
 import CustomError from "@src/shared/classes/CustomError";
 import { IUseCase } from "@src/shared/classes/IUseCase";
 import { IAuthTranslation } from "../types/IAuthTranslation";
+import { comparePassword } from "@src/shared/utils";
 
 interface ILoginUseCase {
   authService: IAuthService;
-  userService: IUserService;
+  credentialRepository: ICredentialRepository;
 }
 
 export class LoginUseCase implements IUseCase {
   private authService: IAuthService;
-  private userService: IUserService;
+  private credentialRepository: ICredentialRepository;
 
-  constructor({ authService, userService }: ILoginUseCase) {
+  constructor({ authService, credentialRepository }: ILoginUseCase) {
     this.authService = authService;
-    this.userService = userService;
+    this.credentialRepository = credentialRepository;
   }
 
   async execute({
@@ -29,9 +31,21 @@ export class LoginUseCase implements IUseCase {
       throw new CustomError("shared.error.requiredFields", 400);
     }
 
-    const user = await this.userService.verifyUserCredentials(email, password);
+    const credential = await this.credentialRepository.findByEmail(email);
 
-    if (!user) {
+    if (!credential) {
+      throw new CustomError<IAuthTranslation>(
+        "auth.login.invalidCredentials",
+        401,
+      );
+    }
+
+    const isPasswordValid = await comparePassword(
+      password,
+      credential.secretData,
+    );
+
+    if (!isPasswordValid) {
       throw new CustomError<IAuthTranslation>(
         "auth.login.invalidCredentials",
         401,
@@ -39,9 +53,8 @@ export class LoginUseCase implements IUseCase {
     }
 
     const payload = {
-      id: user.id,
-      email: user.email,
-      name: user.username,
+      id: credential.userId,
+      email: credential.email,
     };
 
     const accessToken = this.authService.generateToken(payload);
@@ -51,11 +64,6 @@ export class LoginUseCase implements IUseCase {
       accessToken,
       refreshToken,
       expiresIn: this.authService.getTokenExpirationTime(),
-      user: {
-        id: user.id!,
-        email: user.email,
-        name: user.username,
-      },
     };
   }
 }

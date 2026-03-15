@@ -34,12 +34,10 @@ describe("RefreshTokenUseCase", () => {
       expect(authService.generateToken).toHaveBeenCalledWith({
         id: mockTokenPayload.id,
         email: mockTokenPayload.email,
-        name: mockTokenPayload.name,
       });
       expect(authService.generateRefreshToken).toHaveBeenCalledWith({
         id: mockTokenPayload.id,
         email: mockTokenPayload.email,
-        name: mockTokenPayload.name,
       });
 
       expect(result).toEqual({

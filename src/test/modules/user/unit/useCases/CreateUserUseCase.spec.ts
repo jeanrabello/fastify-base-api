@@ -8,6 +8,7 @@ import {
 import CustomError from "@src/shared/classes/CustomError";
 import { CreateUserRequestModel } from "@modules/user/models/Request/CreateUserRequest.model";
 import { hashPassword } from "@src/shared/utils";
+import { ICredentialRepository } from "@modules/auth/types/ICredentialRepository";
 
 jest.mock("@src/shared/utils", () => ({
   ...jest.requireActual("@src/shared/utils"),
@@ -17,6 +18,7 @@ jest.mock("@src/shared/utils", () => ({
 describe("CreateUserUseCase", () => {
   let useCase: CreateUserUseCase;
   let userRepository: jest.Mocked<IUserRepository>;
+  let credentialRepository: jest.Mocked<ICredentialRepository>;
   const mockHashPassword = hashPassword as jest.MockedFunction<
     typeof hashPassword
   >;
@@ -33,22 +35,37 @@ describe("CreateUserUseCase", () => {
       findPaginated: jest.fn(),
       updateUserEmail: jest.fn(),
     } as unknown as jest.Mocked<IUserRepository>;
-    useCase = new CreateUserUseCase({ userRepository });
+
+    credentialRepository = {
+      save: jest.fn(),
+      findByEmail: jest.fn(),
+      updateEmail: jest.fn(),
+      deleteByUserId: jest.fn(),
+    } as jest.Mocked<ICredentialRepository>;
+
+    useCase = new CreateUserUseCase({ userRepository, credentialRepository });
   });
 
   it("Should return new user object", async () => {
-    const { password, ...createdUser } = {
+    const createdUser = {
       id: "mockedId",
-      ...validCreateUserModel,
+      username: validCreateUserModel.username,
+      email: validCreateUserModel.email,
     };
     const hashedPassword = "hashedPassword123";
 
     userRepository.findByEmail.mockResolvedValue(null);
     userRepository.findByUsername.mockResolvedValue(null);
     userRepository.save.mockResolvedValue(createdUser);
+    credentialRepository.save.mockResolvedValue({
+      id: "credentialId",
+      userId: "mockedId",
+      email: validCreateUserModel.email,
+      secretData: hashedPassword,
+    });
     mockHashPassword.mockResolvedValue(hashedPassword);
 
-    const { id, username, email } = await useCase.execute(validCreateUserModel);
+    const result = await useCase.execute(validCreateUserModel);
 
     expect(userRepository.findByEmail).toHaveBeenCalledWith(
       validCreateUserModel.email,
@@ -56,14 +73,19 @@ describe("CreateUserUseCase", () => {
     expect(userRepository.findByUsername).toHaveBeenCalledWith(
       validCreateUserModel.username,
     );
+    expect(userRepository.save).toHaveBeenCalledWith({
+      username: validCreateUserModel.username,
+      email: validCreateUserModel.email,
+    });
     expect(mockHashPassword).toHaveBeenCalledWith(
       validCreateUserModel.password,
     );
-    expect(userRepository.save).toHaveBeenCalledWith({
-      ...validCreateUserModel,
-      password: hashedPassword,
+    expect(credentialRepository.save).toHaveBeenCalledWith({
+      userId: "mockedId",
+      email: validCreateUserModel.email,
+      secretData: hashedPassword,
     });
-    expect({ id, username, email }).toEqual(createdUser);
+    expect(result).toEqual(createdUser);
   });
 
   it("Should return error if some of required fields are missing", async () => {

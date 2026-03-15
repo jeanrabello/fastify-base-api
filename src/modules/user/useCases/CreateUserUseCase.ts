@@ -1,5 +1,6 @@
 import { CreateUserRequestModel } from "@modules/user/models/Request/CreateUserRequest.model";
 import { IUserRepository } from "@modules/user/types/IUserRepository";
+import { ICredentialRepository } from "@modules/auth/types/ICredentialRepository";
 import CustomError from "@src/shared/classes/CustomError";
 import { IUseCase } from "@src/shared/classes/IUseCase";
 import { User } from "@src/shared/entities/user.entity";
@@ -8,13 +9,16 @@ import { IUserTranslation } from "../types/IUserTranslation";
 
 interface ICreateUserUseCase {
   userRepository: IUserRepository;
+  credentialRepository: ICredentialRepository;
 }
 
 export class CreateUserUseCase implements IUseCase {
   private userRepository: IUserRepository;
+  private credentialRepository: ICredentialRepository;
 
-  constructor({ userRepository }: ICreateUserUseCase) {
+  constructor({ userRepository, credentialRepository }: ICreateUserUseCase) {
     this.userRepository = userRepository;
+    this.credentialRepository = credentialRepository;
   }
 
   async execute(input: CreateUserRequestModel): Promise<Partial<User>> {
@@ -42,19 +46,21 @@ export class CreateUserUseCase implements IUseCase {
       );
     }
 
-    const hashedPassword = await hashPassword(input.password);
-    const userDataWithHashedPassword = {
-      ...input,
-      password: hashedPassword,
-    };
-
-    const createdUser = await this.userRepository.save(
-      userDataWithHashedPassword,
-    );
+    const createdUser = await this.userRepository.save({
+      username: input.username,
+      email: input.email,
+    });
 
     if (!createdUser) {
       throw new CustomError<IUserTranslation>("user.createUser.error", 500);
     }
+
+    const hashedPassword = await hashPassword(input.password);
+    await this.credentialRepository.save({
+      userId: createdUser.id!,
+      email: input.email,
+      secretData: hashedPassword,
+    });
 
     return createdUser;
   }

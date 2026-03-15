@@ -26,7 +26,6 @@ describe("FindUserByIdUseCase", () => {
         id: existingUser.id,
         username: existingUser.username,
         email: existingUser.email,
-        password: existingUser.password,
         createdAt: existingUser.createdAt,
         updatedAt: existingUser.updatedAt,
       };
@@ -126,7 +125,6 @@ describe("FindUserByIdUseCase", () => {
         id: "user123",
         username: "testuser",
         email: "test@example.com",
-        password: "hashedpassword",
         createdAt: new Date(),
         updatedAt: new Date(),
       };

@@ -7,8 +7,3 @@ export const mockAuthService: jest.Mocked<IAuthService> = {
   verifyRefreshToken: jest.fn(),
   getTokenExpirationTime: jest.fn(),
 } as any;
-
-export const mockUserService = {
-  findUserByEmail: jest.fn(),
-  verifyPassword: jest.fn(),
-};

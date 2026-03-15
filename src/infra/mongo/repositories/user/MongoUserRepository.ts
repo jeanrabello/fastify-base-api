@@ -1,5 +1,7 @@
-import { CreateUserRequestModel } from "@modules/user/models/Request/CreateUserRequest.model";
-import { IUserRepository } from "@modules/user/types/IUserRepository";
+import {
+  CreateUserInput,
+  IUserRepository,
+} from "@modules/user/types/IUserRepository";
 import { User } from "@src/shared/entities/user.entity";
 import { ObjectId } from "mongodb";
 import { AbstractMongoRepository } from "../AbstractMongoRepository";
@@ -14,11 +16,10 @@ export class MongoUserRepository
 {
   private collectionName = "users";
 
-  async save(newUser: CreateUserRequestModel): Promise<Partial<User> | null> {
+  async save(newUser: CreateUserInput): Promise<Partial<User> | null> {
     const newDocument = {
       username: newUser.username,
       email: newUser.email,
-      password: newUser.password,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -136,20 +137,5 @@ export class MongoUserRepository
       email: updatedUser.email,
     };
     return result;
-  }
-
-  async findByEmailWithPassword(email: string): Promise<User | null> {
-    const user = await this.db
-      .collection<User>(this.collectionName)
-      .findOne({ email });
-    if (!user) return null;
-    return {
-      id: user._id.toString(),
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
   }
 }

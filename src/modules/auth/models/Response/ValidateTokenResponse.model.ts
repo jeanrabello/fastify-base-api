@@ -5,6 +5,5 @@ export interface ValidateTokenResponseModel extends IModel {
   user?: {
     id: string;
     email: string;
-    name: string;
   };
 }

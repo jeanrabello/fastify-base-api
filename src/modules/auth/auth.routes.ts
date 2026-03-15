@@ -13,7 +13,9 @@ import { RefreshTokenUseCase } from "@modules/auth/useCases/RefreshTokenUseCase"
 
 // Services
 import { JWTAuthService } from "@src/shared/services/JWTAuthService";
-import { UserService } from "@src/shared/services/UserService";
+
+// Repositories
+import { MongoCredentialRepository } from "@src/infra/mongo/repositories/credential/MongoCredentialRepository";
 
 // Schemas
 import {
@@ -31,7 +33,7 @@ const authRoutes = (app: FastifyTypedInstance) => {
       new LoginController({
         loginUseCase: new LoginUseCase({
           authService: new JWTAuthService(),
-          userService: new UserService(),
+          credentialRepository: new MongoCredentialRepository(),
         }),
       }),
     ),
