@@ -2,12 +2,14 @@ import { FastifyTypedInstance } from "@src/shared/types/fastifyTypedInstance";
 import { CreateUserController } from "@modules/user/controllers/CreateUserController";
 import {
   createUserSchema,
+  findCurrentUserSchema,
   deleteUserSchema,
   findUserSchema,
   updateUserEmailSchema,
   listUsersSchema,
 } from "@modules/user/schemas";
 import { routeAdapter } from "@utils/routeAdapter";
+import { FindCurrentUserController } from "@modules/user/controllers/FindCurrentUserController";
 import { FindUserController } from "@modules/user/controllers/FindUserController";
 import { ListUsersController } from "@modules/user/controllers/ListUsersController";
 import { FindUserByEmailController } from "@modules/user/controllers/FindUserByEmailController";
@@ -63,6 +65,20 @@ const userRoutes = (app: FastifyTypedInstance) => {
     ),
   );
 
+  app.get(
+    "/me",
+    {
+      ...findCurrentUserSchema,
+      preHandler: app.authenticate,
+    },
+    routeAdapter(
+      new FindCurrentUserController({
+        findUserByIdUseCase: new FindUserByIdUseCase({
+          userRepository: new MongoUserRepository(),
+        }),
+      }),
+    ),
+  );
   app.get(
     "/:id",
     {
