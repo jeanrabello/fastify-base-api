@@ -55,4 +55,4 @@ USER nodejs
 EXPOSE 3000
 
 # Command for production
-CMD ["npm", "start"]
+CMD ["node", "dist/server.js"]
