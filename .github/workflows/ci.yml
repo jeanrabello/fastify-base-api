@@ -29,5 +29,5 @@ jobs:
         uses: docker/build-push-action@v7.3.0
         with:
           context: .
-          tags: 'latest'
+          tags: 'jeanrabello/fastify-base-api:latest'
           push: true
