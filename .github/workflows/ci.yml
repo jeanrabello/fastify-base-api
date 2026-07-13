@@ -29,5 +29,7 @@ jobs:
         uses: docker/build-push-action@v7.3.0
         with:
           context: .
-          tags: 'jeanrabello/fastify-base-api:latest'
-          push: true
+          tags: |
+            jeanrabello/fastify-base-api:latest
+            jeanrabello/fastify-base-api:v${{ github.run_number }}
+          push: ${{ github.event_name != 'pull_request' }}
